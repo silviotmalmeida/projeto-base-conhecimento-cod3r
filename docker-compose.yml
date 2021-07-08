@@ -1,0 +1,25 @@
+version: '3.5'
+
+services:
+
+  #nome do servico
+  base-conhecimento:
+
+    #construido a partir de uma imagem customizada em ./image
+    image: base-conhecimento
+    
+    #nome do conteiner
+    container_name: base-conhecimento
+
+    #pastas compartilhadas
+    volumes:
+      #pasta do codigo fonte da aplicacao
+      - "./app:/usr/src/app"
+
+    #porta a ser exposta
+    ports:
+      - 4000:4000
+      - 8080:8080
+  
+    #artifício para manter o container aberto
+    tty: true
