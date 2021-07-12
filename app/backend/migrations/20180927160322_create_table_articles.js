@@ -1,3 +1,4 @@
+// criada a partir do comando knex migrate:make create_table_articles
 
 exports.up = function(knex, Promise) {
     return knex.schema.createTable('articles', table => {

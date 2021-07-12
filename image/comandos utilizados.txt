@@ -8,6 +8,8 @@ apt install nodejs
 
 apt install npm
 
+npm install knex -g
+
 apt install systemctl
 
 apt install curl

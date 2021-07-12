@@ -1,13 +1,18 @@
+// 
 const bcrypt = require('bcrypt-nodejs')
 
 module.exports = app => {
+
+    // 
     const { existsOrError, notExistsOrError, equalsOrError } = app.api.validation
 
+    // 
     const encryptPassword = password => {
         const salt = bcrypt.genSaltSync(10)
         return bcrypt.hashSync(password, salt)
     }
 
+    // método para cadastro de usuário e atualização de usuário por id
     const save = async (req, res) => {
         const user = { ...req.body }
         if(req.params.id) user.id = req.params.id
@@ -50,6 +55,7 @@ module.exports = app => {
         }
     }
 
+    // método para listagem de usuários
     const get = (req, res) => {
         app.db('users')
             .select('id', 'name', 'email', 'admin')
@@ -58,6 +64,7 @@ module.exports = app => {
             .catch(err => res.status(500).send(err))
     }
 
+    // método para consulta de usuário por id
     const getById = (req, res) => {
         app.db('users')
             .select('id', 'name', 'email', 'admin')
@@ -68,6 +75,7 @@ module.exports = app => {
             .catch(err => res.status(500).send(err))
     }
 
+    // método para exclusão de usuário por id
     const remove = async (req, res) => {
         try {
             const articles = await app.db('articles')
