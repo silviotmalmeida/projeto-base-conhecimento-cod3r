@@ -1,9 +1,35 @@
 FROM ubuntu:20.04
 
-apt update
+apt update --fix-missing
+
+apt upgrade
 
 apt install nodejs
 
 apt install npm
 
+apt install systemctl
+
+apt install curl
+
+curl -fsSL https://www.mongodb.org/static/pgp/server-4.4.asc | apt-key add -
+
+echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/4.4 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-4.4.list
+
+apt update --fix-missing
+
+apt install mongodb-org
+
 apt install postgresql postgresql-contrib
+
+service postgresql start
+
+su postgres
+
+psql -c "CREATE USER conhecimento WITH PASSWORD 'conhecimento'" -d template1
+
+psql -c "CREATE DATABASE conhecimento OWNER conhecimento"
+
+exit
+
+service postgresql stop
