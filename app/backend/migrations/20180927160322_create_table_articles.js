@@ -1,5 +1,6 @@
 // criada a partir do comando knex migrate:make create_table_articles
 
+// criando a tabela articles
 exports.up = function(knex, Promise) {
     return knex.schema.createTable('articles', table => {
         table.increments('id').primary()
@@ -14,6 +15,7 @@ exports.up = function(knex, Promise) {
     })
 };
 
+// excluindo a tabela articles
 exports.down = function(knex, Promise) {
     return knex.schema.dropTable('articles')
 };

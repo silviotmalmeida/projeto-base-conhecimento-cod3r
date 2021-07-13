@@ -1,3 +1,4 @@
+// criado a partir do comando knex init
 // carregando os dados do objeto db do arquivo .env
 const { db } = require("./.env");
 

@@ -1,32 +1,43 @@
 // importando as dependências
+// servidor http
 const app = require("express")();
-const consign = require("consign");
-const db = require("./config/db");
-const mongoose = require("mongoose");
 
+// gerenciador de injeção de middlewares
+const consign = require("consign");
+
+// gerenciador de acesso ao bd postgresql
+const db = require("./config/db");
+
+// gerenciador de acesso ao bd mongodb
+const mongoose = require("mongoose");
 require("./config/mongodb");
 
-// adicionando o postgresql ao app
+// adicionando o bd postgresql ao app
 app.db = db;
 
-// adicionando o mongodb ao app
+// adicionando o bd mongodb ao app
 app.mongoose = mongoose;
 
-// injetando os arquivos no app
+// injetando os middlewares no app
 consign()
   //
   .include("./config/passport.js")
 
-  // injetando os middlewares
+  // injetando os middlewares gerais
   .then("./config/middlewares.js")
+
   //
   .then("./api/validation.js")
+
   // injetando os arquivos da pasta api
   .then("./api")
+
   //
   .then("./schedule")
+
   // injetando as rotas
   .then("./config/routes.js")
+
   .into(app);
 
 // iniciando a api na porta 4000
