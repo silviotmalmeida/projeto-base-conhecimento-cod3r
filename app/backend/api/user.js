@@ -15,6 +15,37 @@ module.exports = (app) => {
     return bcrypt.hashSync(password, salt);
   };
 
+  // método para inclusão de um administrador genérico para fins de desenvolvimento
+  const createDummyAdmin = async (req, res) => {
+    // atributos do administrador genérico
+    const user = {
+      name: "Administrador Genérico",
+      email: "administrador@generico.com.br",
+      password: "123456",
+      confirmPassword: "123456",
+      admin: true,
+    };
+
+    // criptografando a senha do usuário
+    user.password = encryptPassword(user.password);
+
+    // limpando o atributo confirmPassword
+    delete user.confirmPassword;
+
+    app
+      // definindo a tabela users
+      .db("users")
+
+      // inserindo o usuário através dos dados passados no body da requisição
+      .insert(user)
+
+      // em caso de sucesso retorna o status 204
+      .then((_) => res.status(204).send())
+
+      // em caso de erro retorna o status 500 e detalhes do erro
+      .catch((err) => res.status(500).send(err));
+  };
+
   // método para cadastro de usuário e atualização de usuário por id
   const save = async (req, res) => {
     // obtendo os dados do body da requisição
@@ -26,7 +57,7 @@ module.exports = (app) => {
     if (!req.originalUrl.startsWith("/users")) user.admin = false;
     if (!req.user || !req.user.admin) user.admin = false;
 
-    // validando os dados recebidos
+    // validando os dados recebidos pelo body da requisição
     try {
       // se o nome não for válido, lança mensagem de erro
       existsOrError(user.name, "Nome não informado");
@@ -46,18 +77,19 @@ module.exports = (app) => {
       // iniciando processamento síncrono
       const userFromDB = await app
 
-        // consultando na tabela users
+        // definindo na tabela users
         .db("users")
 
         // filtrando a consulta com o email informado
         .where({ email: user.email })
 
-        // retornando o primeiro registro
+        // retornando somente o primeiro registro
         .first();
+      // finalizando processamento síncrono
 
       // se o atributo user.id não estiver setado
       if (!user.id) {
-        // se a consulta retornar algo, lança uma mensagem de erro
+        // se a consulta retornar um email existente, lança uma mensagem de erro
         notExistsOrError(userFromDB, "Usuário já cadastrado");
       }
     } catch (msg) {
@@ -65,68 +97,139 @@ module.exports = (app) => {
       return res.status(400).send(msg);
     }
 
+    // criptografando a senha do usuário
     user.password = encryptPassword(user.password);
+
+    // limpando o atributo confirmPassword
     delete user.confirmPassword;
 
+    // se o atributo user.id estiver setado,
     if (user.id) {
+      // será feita uma atualização
       app
+        // definindo a tabela users
         .db("users")
+
+        // atualizando o cadastro do usuário através dos dados passados no body da requisição
         .update(user)
+
+        // filtrando o update com o id recebido pelo parâmetro da requisição
         .where({ id: user.id })
+
+        // só serão atualizados usuários ativos, ou seja com o atributo deletedAt nulo
         .whereNull("deletedAt")
+
+        // em caso de sucesso retorna o status 204
         .then((_) => res.status(204).send())
+
+        // em caso de erro retorna o status 500 e detalhes do erro
         .catch((err) => res.status(500).send(err));
-    } else {
+    }
+    // senão será feita uma inclusão
+    else {
       app
+        // definindo a tabela users
         .db("users")
+
+        // inserindo o usuário através dos dados passados no body da requisição
         .insert(user)
+
+        // em caso de sucesso retorna o status 204
         .then((_) => res.status(204).send())
+
+        // em caso de erro retorna o status 500 e detalhes do erro
         .catch((err) => res.status(500).send(err));
     }
   };
 
-  // método para listagem de usuários
+  // método para consulta de usuários
   const get = (req, res) => {
     app
+      // definindo a tabela users
       .db("users")
-      .select("id", "name", "email", "admin")
+
+      // filtrando os campos a serem retornados
+      .select("id", "name", "email", "admin", "password", "deletedAt")
+
+      // só serão retornados usuários ativos, ou seja com o atributo deletedAt nulo
       .whereNull("deletedAt")
+
+      // em caso de sucesso retorna os dados no formato json
       .then((users) => res.json(users))
+
+      // em caso de erro retorna o status 500 e detalhes do erro
       .catch((err) => res.status(500).send(err));
   };
 
   // método para consulta de usuário por id
   const getById = (req, res) => {
     app
+      // definindo a tabela users
       .db("users")
+
+      // filtrando os campos a serem retornados
       .select("id", "name", "email", "admin")
+
+      // filtrando a consulta com o id recebido pelo parâmetro da requisição
       .where({ id: req.params.id })
+
+      // só serão retornados usuários ativos, ou seja com o atributo deletedAt nulo
       .whereNull("deletedAt")
+
+      // retornando somente o primeiro registro
       .first()
+
+      // em caso de sucesso retorna os dados no formato json
       .then((user) => res.json(user))
+
+      // em caso de erro retorna o status 500 e detalhes do erro
       .catch((err) => res.status(500).send(err));
   };
 
-  // método para exclusão de usuário por id
+  // método para exclusão de usuário por id (soft delete)
   const remove = async (req, res) => {
     try {
+      // consultando no bd se existem artigos relacionados ao usuário
+      // iniciando processamento síncrono
       const articles = await app
+
+        // definindo a tabela articles
         .db("articles")
+
+        // filtrando a consulta com o id recebido pelo parâmetro da requisição
         .where({ userId: req.params.id });
+      // fim do processamento síncrono
+
+      // se existirem artigos relacionados ao usuário, lança mensagem de erro
       notExistsOrError(articles, "Usuário possui artigos.");
+      // senão prossegue:
 
+      // realizando o soft delete do usuário
+      // iniciando processamento síncrono
       const rowsUpdated = await app
-        .db("users")
-        .update({ deletedAt: new Date() })
-        .where({ id: req.params.id });
-      existsOrError(rowsUpdated, "Usuário não foi encontrado.");
 
+        // definindo a tabela users
+        .db("users")
+
+        // realizando o update do atributo deletedAt para o momento atual
+        .update({ deletedAt: new Date() })
+
+        // filtrando a consulta com o id recebido pelo parâmetro da requisição
+        .where({ id: req.params.id });
+      // fim do processamento síncrono
+
+      // se não foi atualizada nenhuma linha, lança mensagem de erro
+      existsOrError(rowsUpdated, "Usuário não foi encontrado.");
+      // senão prossegue:
+
+      // em caso de erro retorna o status 204
       res.status(204).send();
     } catch (msg) {
+      // em caso de erro retorna o status 400 e detalhes do erro
       res.status(400).send(msg);
     }
   };
 
   // disponibiliza as funções para uso do app (padrão consign)
-  return { save, get, getById, remove };
+  return { createDummyAdmin, save, get, getById, remove };
 };
