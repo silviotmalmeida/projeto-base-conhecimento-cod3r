@@ -1,5 +1,5 @@
 // importando as dependências
-// servidor http
+// servidor http da api
 const app = require("express")();
 
 // gerenciador de injeção de middlewares
@@ -12,13 +12,13 @@ const db = require("./config/db");
 const mongoose = require("mongoose");
 require("./config/mongodb");
 
-// adicionando o bd postgresql ao app
+// adicionando suporte ao bd postgresql ao app
 app.db = db;
 
-// adicionando o bd mongodb ao app
+// adicionando suporte o bd mongodb ao app
 app.mongoose = mongoose;
 
-// injetando os middlewares no app
+// injetando os middlewares no app com o consign
 consign()
   //
   .include("./config/passport.js")

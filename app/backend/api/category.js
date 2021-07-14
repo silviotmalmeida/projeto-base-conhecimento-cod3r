@@ -118,46 +118,79 @@ module.exports = (app) => {
     }
   };
 
+  // método para consulta de categorias com árvore de relacionamentos
   const withPath = (categories) => {
+    // função auxiliar responsável por retornar o nome da categoria pai de uma determinada categoria
     const getParent = (categories, parentId) => {
+      // iterando no array de categorias e filtrando pelo parentId informado
       const parent = categories.filter((parent) => parent.id === parentId);
+      // se existir algum pai, retorna a categoria pai, senão retorna nulo
       return parent.length ? parent[0] : null;
     };
 
+    // função que insere a árvore de relacionamentos no array de categorias
+    // iterando no array de categorias
     const categoriesWithPath = categories.map((category) => {
+      // inicializando a árvore de relacionamento com o nome da categoria atual
       let path = category.name;
+
+      // obtendo a categoria pai
       let parent = getParent(categories, category.parentId);
 
+      // enquanto existir antepassado
       while (parent) {
+        // preenche a árvore de relacionamento de forma recursiva
         path = `${parent.name} > ${path}`;
+
+        // obtendo os antepassados de forma recursiva
         parent = getParent(categories, parent.parentId);
       }
 
+      // inserindo no array de categorias a árvore de relacionamentos
       return { ...category, path };
     });
 
+    // inserindo a árvore de relacionamento no array de categorias e ordenando alfabeticamente
     categoriesWithPath.sort((a, b) => {
       if (a.path < b.path) return -1;
       if (a.path > b.path) return 1;
       return 0;
     });
 
+    // retornando o array de categorias com a árvore de relacionamentos ordenada alfabeticamente
     return categoriesWithPath;
   };
 
+  // método para consulta de categorias
   const get = (req, res) => {
     app
+      // consultando a tabela categories
       .db("categories")
+
+      // em caso de sucesso retorna os dados no formato json
+      // serão retornadas as categorias e a respectiva árvore de relacionamentos
       .then((categories) => res.json(withPath(categories)))
+
+      // em caso de erro retorna o status 500 e detalhes do erro
       .catch((err) => res.status(500).send(err));
   };
 
+  // método para consulta de categoria por id
   const getById = (req, res) => {
     app
+      // consultando a tabela categories
       .db("categories")
+
+      // filtrando a consulta com o id recebido pelo parâmetro da requisição
       .where({ id: req.params.id })
+
+      // retornando somente o primeiro registro
       .first()
+
+      // em caso de sucesso retorna os dados no formato json
       .then((category) => res.json(category))
+
+      // em caso de erro retorna o status 500 e detalhes do erro
       .catch((err) => res.status(500).send(err));
   };
 
