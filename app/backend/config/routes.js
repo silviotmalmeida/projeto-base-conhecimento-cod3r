@@ -2,20 +2,23 @@
 const admin = require("./admin");
 
 module.exports = (app) => {
+
+  // 
   app.post("/signup", app.api.user.save);
+
+  // 
   app.post("/signin", app.api.auth.signin);
+
+  // 
   app.post("/validateToken", app.api.auth.validateToken);
 
-  // entrypoint de /createDummyAdmin
+  // entrypoint de /createGenericAdmin
   // utilizado somente para inclusão de um administrador genérico para fins de desenvolvimento
   app
-    .route("/createDummyAdmin")
-    // intercepta todas as requisições para ...
-    // .all(app.config.passport.authenticate())
+    .route("/createGenericAdmin")
 
     // intercepta as requisições get para a inclusão do administrador genérico
-    // .get(admin(app.api.user.get));
-    .get(app.api.user.createDummyAdmin);
+    .get(app.api.user.createGenericAdmin);
 
   // entrypoint de /users
   app
