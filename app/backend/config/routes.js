@@ -19,6 +19,14 @@ module.exports = (app) => {
     // intercepta as requisições get para a inclusão do administrador genérico
     .get(app.api.user.createGenericAdmin);
 
+  // entrypoint de /createGenericCategories
+  // utilizado somente para inclusão de categorias genéricas para fins de desenvolvimento
+  app
+    .route("/createGenericCategories")
+
+    // intercepta as requisições get para a inclusão de categorias genéricas
+    .get(app.api.category.createGenericCategories);
+
   // entrypoint de /users
   app
     .route("/users")
@@ -65,10 +73,14 @@ module.exports = (app) => {
     // é necessário ser administrador
     .get(admin(app.api.category.get));
 
-  // Cuidado com ordem! Tem que vir antes de /categories/:id
+  // entrypoint de /categories/tree
+  // cuidado com ordem! Tem que vir antes de /categories/:id
   app
     .route("/categories/tree")
-    .all(app.config.passport.authenticate())
+    // intercepta todas as requisições para ...
+    // .all(app.config.passport.authenticate())
+
+    // intercepta as requisições get para consulta de categorias organizadas em árvore
     .get(app.api.category.getTree);
 
   // entrypoint de /categories/:id
@@ -86,7 +98,6 @@ module.exports = (app) => {
     .delete(admin(app.api.category.remove))
 
     // intercepta as requisições get para consulta de categoria por id
-    // é necessário ser administrador
     .get(app.api.category.getById);
 
   app

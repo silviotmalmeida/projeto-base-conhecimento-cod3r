@@ -3,7 +3,113 @@ module.exports = (app) => {
   // importando as funções de validação de dados
   const { existsOrError, notExistsOrError } = app.api.validation;
 
-  // método para cadastro de usuário e atualização de usuário por id
+  // método para inclusão de categorias genéricas para fins de desenvolvimento
+  const createGenericCategories = async (req, res) => {
+    // atributos das categorias genéricas
+    const category1 = {
+      name: "Categoria 1",
+    };
+
+    const category2 = {
+      name: "Categoria 1.1",
+    };
+
+    const category3 = {
+      name: "Categoria 1.1.1",
+    };
+
+    // inserindo a Categoria 1
+    // iniciando processamento síncrono
+    await app
+      // consultando a tabela categories
+      .db("categories")
+
+      // inserindo o usuário através dos dados passados no body da requisição
+      .insert(category1)
+
+      // em caso de erro retorna o status 500 e detalhes do erro
+      .catch((err) => res.status(500).send(err));
+    // finalizando processamento síncrono
+
+    // consultando o id da Categoria 1 para inclusão da Categoria 1.1 como filha
+    try {
+      // iniciando processamento síncrono
+      const parentCategory = await app
+
+        // consultando na tabela users
+        .db("categories")
+
+        // filtrando a consulta com o nome da Categoria 1
+        .where({ name: category1.name })
+
+        // retornando somente o último registro
+        .max("id")
+        .first();
+      // finalizando processamento síncrono
+
+      // se a consulta não retornar um id, lança uma mensagem de erro
+      existsOrError(parentCategory, "Categoria não encontrada");
+
+      // atribuindo o parentId à Categoria 1.1
+      category2.parentId = parentCategory.max;
+    } catch (msg) {
+      // se foi lançado algum erro, retorna erro 400
+      return res.status(400).send(msg);
+    }
+
+    // inserindo a Categoria 1.1
+    await app
+      // consultando a tabela categories
+      .db("categories")
+
+      // inserindo o usuário através dos dados passados no body da requisição
+      .insert(category2)
+
+      // em caso de erro retorna o status 500 e detalhes do erro
+      .catch((err) => res.status(500).send(err));
+
+    // consultando o id da Categoria 1.1 para inclusão da Categoria 1.1.1 como filha
+    try {
+      // iniciando processamento síncrono
+      const parentCategory = await app
+
+        // consultando na tabela users
+        .db("categories")
+
+        // filtrando a consulta com o nome da Categoria 1.1
+        .where({ name: category2.name })
+
+        // retornando somente o último registro
+        .max("id")
+        .first();
+      // finalizando processamento síncrono
+
+      // se a consulta não retornar um id, lança uma mensagem de erro
+      existsOrError(parentCategory, "Categoria não encontrada");
+
+      // atribuindo o parentId à Categoria 1.1
+      category3.parentId = parentCategory.max;
+    } catch (msg) {
+      // se foi lançado algum erro, retorna erro 400
+      return res.status(400).send(msg);
+    }
+
+    // inserindo a Categoria 1.1.1
+    await app
+      // consultando a tabela categories
+      .db("categories")
+
+      // inserindo o usuário através dos dados passados no body da requisição
+      .insert(category3)
+
+      // em caso de sucesso retorna o status 200 e mensagem de sucesso
+      .then((_) => res.status(200).send(`Categorias genéricas inseridas`))
+
+      // em caso de erro retorna o status 500 e detalhes do erro
+      .catch((err) => res.status(500).send(err));
+  };
+
+  // método para cadastro de categoria e atualização de categoria por id
   const save = (req, res) => {
     // obtendo os dados do body da requisição
     const category = {
@@ -12,7 +118,7 @@ module.exports = (app) => {
       parentId: req.body.parentId,
     };
 
-    // se na requisição estiver setado o atributo id, preenche o category user.id
+    // se na requisição estiver setado o atributo id, preenche o category.id
     if (req.params.id) category.id = req.params.id;
 
     // validando os dados recebidos pelo body da requisição
@@ -118,7 +224,7 @@ module.exports = (app) => {
     }
   };
 
-  // método para consulta de categorias com árvore de relacionamentos
+  // método para consulta de categorias com os relacionamentos
   const withPath = (categories) => {
     // função auxiliar responsável por retornar o nome da categoria pai de uma determinada categoria
     const getParent = (categories, parentId) => {
@@ -128,10 +234,10 @@ module.exports = (app) => {
       return parent.length ? parent[0] : null;
     };
 
-    // função que insere a árvore de relacionamentos no array de categorias
+    // função que insere os relacionamentos no array de categorias
     // iterando no array de categorias
     const categoriesWithPath = categories.map((category) => {
-      // inicializando a árvore de relacionamento com o nome da categoria atual
+      // inicializando o relacionamento com o nome da categoria atual
       let path = category.name;
 
       // obtendo a categoria pai
@@ -139,25 +245,25 @@ module.exports = (app) => {
 
       // enquanto existir antepassado
       while (parent) {
-        // preenche a árvore de relacionamento de forma recursiva
+        // preenche o relacionamento de forma recursiva
         path = `${parent.name} > ${path}`;
 
         // obtendo os antepassados de forma recursiva
         parent = getParent(categories, parent.parentId);
       }
 
-      // inserindo no array de categorias a árvore de relacionamentos
+      // inserindo no array de categorias os relacionamentos
       return { ...category, path };
     });
 
-    // inserindo a árvore de relacionamento no array de categorias e ordenando alfabeticamente
+    // inserindo o relacionamento no array de categorias e ordenando alfabeticamente
     categoriesWithPath.sort((a, b) => {
       if (a.path < b.path) return -1;
       if (a.path > b.path) return 1;
       return 0;
     });
 
-    // retornando o array de categorias com a árvore de relacionamentos ordenada alfabeticamente
+    // retornando o array de categorias com o relacionamentos ordenada alfabeticamente
     return categoriesWithPath;
   };
 
@@ -167,8 +273,8 @@ module.exports = (app) => {
       // consultando a tabela categories
       .db("categories")
 
-      // em caso de sucesso retorna os dados no formato json
-      // serão retornadas as categorias e a respectiva árvore de relacionamentos
+      // em caso de sucesso retorno dados no formato json
+      // serão retornadas as categorias e a respectivo relacionamentos
       .then((categories) => res.json(withPath(categories)))
 
       // em caso de erro retorna o status 500 e detalhes do erro
@@ -187,29 +293,48 @@ module.exports = (app) => {
       // retornando somente o primeiro registro
       .first()
 
-      // em caso de sucesso retorna os dados no formato json
+      // em caso de sucesso retorno dados no formato json
       .then((category) => res.json(category))
 
       // em caso de erro retorna o status 500 e detalhes do erro
       .catch((err) => res.status(500).send(err));
   };
 
+  // método para que converte as categorias para uma estrutura de árvore
   const toTree = (categories, tree) => {
+    // se a árvore ainda estiver vazia, insere inicialmente as categorias sem pai
+    // através da filtragem do array de categorias onde o atributo parentId é nulo
     if (!tree) tree = categories.filter((c) => !c.parentId);
+    // senão, prosegue
+
+    // itera sobre a árvore de forma recursiva
     tree = tree.map((parentNode) => {
+      // criando uma função que verifica se determinado nó é filho de outro
       const isChild = (node) => node.parentId == parentNode.id;
+
+      // inserindo no atributo children os nós filhos de forma recursiva
       parentNode.children = toTree(categories, categories.filter(isChild));
+
+      // retornando o nó atualizado para a próxima iteração
       return parentNode;
     });
+
+    // retornando as categorias em uma estrutura de árvore
     return tree;
   };
 
+  // método para que retorna as categorias em uma estrutura de árvore
+  // utilizado para construção do menu lateral do frontend
   const getTree = (req, res) => {
     app
+      // consultando a tabela categories
       .db("categories")
+      // convertendo e retornando as categorias em formato json
       .then((categories) => res.json(toTree(categories)))
+      // em caso de erro retorna o status 500 e detalhes do erro
       .catch((err) => res.status(500).send(err));
   };
 
-  return { save, remove, get, getById, getTree };
+  // disponibiliza as funções para uso do app (padrão consign)
+  return { createGenericCategories, save, remove, get, getById, getTree };
 };
