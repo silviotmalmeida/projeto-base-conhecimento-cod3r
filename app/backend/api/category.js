@@ -18,13 +18,35 @@ module.exports = (app) => {
       name: "Categoria 1.1.1",
     };
 
+    // verificando se já existe categoria genérica cadastrada
+    try {
+      // iniciando processamento síncrono
+      const genericCategory = await app
+
+        // consultando na tabela categories
+        .db("categories")
+
+        // filtrando a consulta com o nome da Categoria 1
+        .where({ name: category1.name })
+
+        // retornando somente o primeiro registro
+        .first();
+      // finalizando processamento síncrono
+
+      // se a consulta retornar um id, lança uma mensagem de erro
+      notExistsOrError(genericCategory, "Categoria genérica já cadastrada!");
+    } catch (msg) {
+      // se foi lançado algum erro, retorna erro 400
+      return res.status(400).send(msg);
+    }
+
     // inserindo a Categoria 1
     // iniciando processamento síncrono
     await app
       // consultando a tabela categories
       .db("categories")
 
-      // inserindo o usuário através dos dados passados no body da requisição
+      // inserindo os dados da categoria
       .insert(category1)
 
       // em caso de erro retorna o status 500 e detalhes do erro
@@ -36,14 +58,13 @@ module.exports = (app) => {
       // iniciando processamento síncrono
       const parentCategory = await app
 
-        // consultando na tabela users
+        // consultando na tabela categories
         .db("categories")
 
         // filtrando a consulta com o nome da Categoria 1
         .where({ name: category1.name })
 
-        // retornando somente o último registro
-        .max("id")
+        // retornando somente o primeiro registro
         .first();
       // finalizando processamento síncrono
 
@@ -51,7 +72,7 @@ module.exports = (app) => {
       existsOrError(parentCategory, "Categoria não encontrada");
 
       // atribuindo o parentId à Categoria 1.1
-      category2.parentId = parentCategory.max;
+      category2.parentId = parentCategory.id;
     } catch (msg) {
       // se foi lançado algum erro, retorna erro 400
       return res.status(400).send(msg);
@@ -62,7 +83,7 @@ module.exports = (app) => {
       // consultando a tabela categories
       .db("categories")
 
-      // inserindo o usuário através dos dados passados no body da requisição
+      // inserindo os dados da categoria
       .insert(category2)
 
       // em caso de erro retorna o status 500 e detalhes do erro
@@ -73,14 +94,13 @@ module.exports = (app) => {
       // iniciando processamento síncrono
       const parentCategory = await app
 
-        // consultando na tabela users
+        // consultando na tabela categories
         .db("categories")
 
         // filtrando a consulta com o nome da Categoria 1.1
         .where({ name: category2.name })
 
-        // retornando somente o último registro
-        .max("id")
+        // retornando somente o primeiro registro
         .first();
       // finalizando processamento síncrono
 
@@ -88,7 +108,7 @@ module.exports = (app) => {
       existsOrError(parentCategory, "Categoria não encontrada");
 
       // atribuindo o parentId à Categoria 1.1
-      category3.parentId = parentCategory.max;
+      category3.parentId = parentCategory.id;
     } catch (msg) {
       // se foi lançado algum erro, retorna erro 400
       return res.status(400).send(msg);
@@ -99,11 +119,11 @@ module.exports = (app) => {
       // consultando a tabela categories
       .db("categories")
 
-      // inserindo o usuário através dos dados passados no body da requisição
+      // inserindo os dados da categoria
       .insert(category3)
 
       // em caso de sucesso retorna o status 200 e mensagem de sucesso
-      .then((_) => res.status(200).send(`Categorias genéricas inseridas`))
+      .then((_) => res.status(200).send(`Categorias genéricas inseridas!`))
 
       // em caso de erro retorna o status 500 e detalhes do erro
       .catch((err) => res.status(500).send(err));
@@ -272,6 +292,9 @@ module.exports = (app) => {
     app
       // consultando a tabela categories
       .db("categories")
+
+      // filtrando os campos a serem retornados
+      .select("id", "name", "parentId")
 
       // em caso de sucesso retorno dados no formato json
       // serão retornadas as categorias e a respectivo relacionamentos

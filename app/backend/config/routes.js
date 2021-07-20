@@ -27,6 +27,14 @@ module.exports = (app) => {
     // intercepta as requisições get para a inclusão de categorias genéricas
     .get(app.api.category.createGenericCategories);
 
+  // entrypoint de /createGenericArticles
+  // utilizado somente para inclusão de artigos genéricos para fins de desenvolvimento
+  app
+    .route("/createGenericArticles")
+
+    // intercepta as requisições get para a inclusão de categorias genéricas
+    .get(app.api.article.createGenericArticles);
+
   // entrypoint de /users
   app
     .route("/users")
@@ -115,7 +123,7 @@ module.exports = (app) => {
 
   app
     .route("/categories/:id/articles")
-    .all(app.config.passport.authenticate())
+    // .all(app.config.passport.authenticate())
     .get(app.api.article.getByCategory);
 
   app

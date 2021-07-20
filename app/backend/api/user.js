@@ -41,7 +41,7 @@ module.exports = (app) => {
       // finalizando processamento síncrono
 
       // se a consulta retornar um email existente, lança uma mensagem de erro
-      notExistsOrError(userFromDB, "Administrador genérico já cadastrado");
+      notExistsOrError(userFromDB, "Administrador genérico já cadastrado!");
     } catch (msg) {
       // se foi lançado algum erro, retorna erro 400
       return res.status(400).send(msg);
@@ -178,7 +178,7 @@ module.exports = (app) => {
       .db("users")
 
       // filtrando os campos a serem retornados
-      .select("id", "name", "email", "admin", "password", "deletedAt")
+      .select("id", "name", "email", "password", "admin", "deletedAt")
 
       // só serão retornados usuários ativos, ou seja com o atributo deletedAt nulo
       .whereNull("deletedAt")
