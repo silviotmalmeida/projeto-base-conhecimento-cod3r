@@ -6,7 +6,7 @@ module.exports = (app) => {
   // importando as funções de validação de dados
   const { existsOrError } = app.api.validation;
 
-  // método para inclusão de artigo genérico para fins de desenvolvimento
+  // método para inclusão de artigos genéricos para fins de desenvolvimento
   const createGenericArticles = async (req, res) => {
     // atributos dos artigos genéricos
     const article1 = {
@@ -44,7 +44,7 @@ module.exports = (app) => {
         // filtrando os campos a serem retornados
         .select("id", "name")
 
-        // filtrando a consulta com o nome da Categoria 1
+        // filtrando a consulta com o nome do administrador genérico
         .where({ name: "Administrador Genérico" })
 
         // retornando somente o primeiro registro
@@ -102,7 +102,7 @@ module.exports = (app) => {
         // filtrando os campos a serem retornados
         .select("id", "name")
 
-        // filtrando a consulta com o nome da Categoria 1
+        // filtrando a consulta com o nome da Categoria 1.1
         .where({ name: "Categoria 1.1" })
 
         // retornando somente o primeiro registro
@@ -130,7 +130,7 @@ module.exports = (app) => {
         // filtrando os campos a serem retornados
         .select("id", "name")
 
-        // filtrando a consulta com o nome da Categoria 1
+        // filtrando a consulta com o nome da Categoria 1.1.1
         .where({ name: "Categoria 1.1.1" })
 
         // retornando somente o primeiro registro
@@ -186,7 +186,7 @@ module.exports = (app) => {
       .insert(article3)
 
       // em caso de sucesso retorna o status 200 e mensagem de sucesso
-      .then((_) => res.status(200).send(`Artigos genéricos inseridos!`))
+      .then((_) => res.status(200).send("Artigos genéricos inseridos!"))
 
       // em caso de erro retorna o status 500 e detalhes do erro
       .catch((err) => res.status(500).send(err));
