@@ -2,44 +2,44 @@
 const admin = require("./admin");
 
 module.exports = (app) => {
-  //
-  app.post("/signup", app.api.user.save);
+  // entrypoint de /signup
+  app
+    // intercepta as requisições post para inclusão de novos usuários
+    .post("/signup", app.api.user.save);
 
-  //
-  app.post("/signin", app.api.auth.signin);
+  // entrypoint de /signin
+  app
+    // intercepta as requisições post para login no sistema
+    .post("/signin", app.api.auth.signin);
 
-  //
-  app.post("/validateToken", app.api.auth.validateToken);
+  // entrypoint de /validateToken
+  app
+    // intercepta as requisições post para validação do token
+    .post("/validateToken", app.api.auth.validateToken);
 
   // entrypoint de /createGenericAdmin
   // utilizado somente para inclusão de um administrador genérico para fins de desenvolvimento
   app
-    .route("/createGenericAdmin")
-
     // intercepta as requisições get para a inclusão do administrador genérico
-    .get(app.api.user.createGenericAdmin);
+    .get("/createGenericAdmin", app.api.user.createGenericAdmin);
 
   // entrypoint de /createGenericCategories
   // utilizado somente para inclusão de categorias genéricas para fins de desenvolvimento
   app
-    .route("/createGenericCategories")
-
     // intercepta as requisições get para a inclusão de categorias genéricas
-    .get(app.api.category.createGenericCategories);
+    .get("/createGenericCategories", app.api.category.createGenericCategories);
 
   // entrypoint de /createGenericArticles
   // utilizado somente para inclusão de artigos genéricos para fins de desenvolvimento
   app
-    .route("/createGenericArticles")
-
     // intercepta as requisições get para a inclusão de categorias genéricas
-    .get(app.api.article.createGenericArticles);
+    .get("/createGenericArticles", app.api.article.createGenericArticles);
 
   // entrypoint de /users
   app
     .route("/users")
-    // intercepta todas as requisições para ...
-    // .all(app.config.passport.authenticate())
+    // intercepta todas as requisições para validação de token presente no header Authorization
+    .all(app.config.passport.authenticate())
 
     // intercepta as requisições post para inclusão de novos usuários
     // é necessário ser administrador
@@ -52,8 +52,8 @@ module.exports = (app) => {
   // entrypoint de /users/:id
   app
     .route("/users/:id")
-    // intercepta todas as requisições para ...
-    // .all(app.config.passport.authenticate())
+    // intercepta todas as requisições para validação de token presente no header Authorization
+    .all(app.config.passport.authenticate())
 
     // intercepta as requisições put para atualização de usuário por id
     // é necessário ser administrador
@@ -70,8 +70,8 @@ module.exports = (app) => {
   // entrypoint de /categories
   app
     .route("/categories")
-    // intercepta todas as requisições para ...
-    // .all(app.config.passport.authenticate())
+    // intercepta todas as requisições para validação de token presente no header Authorization
+    .all(app.config.passport.authenticate())
 
     // intercepta as requisições post para inclusão de novas categorias
     // é necessário ser administrador
@@ -85,8 +85,8 @@ module.exports = (app) => {
   // cuidado com ordem! Tem que vir antes de /categories/:id
   app
     .route("/categories/tree")
-    // intercepta todas as requisições para ...
-    // .all(app.config.passport.authenticate())
+    // intercepta todas as requisições para validação de token presente no header Authorization
+    .all(app.config.passport.authenticate())
 
     // intercepta as requisições get para consulta de categorias organizadas em árvore
     .get(app.api.category.getTree);
@@ -94,8 +94,8 @@ module.exports = (app) => {
   // entrypoint de /categories/:id
   app
     .route("/categories/:id")
-    // intercepta todas as requisições para ...
-    // .all(app.config.passport.authenticate())
+    // intercepta todas as requisições para validação de token presente no header Authorization
+    .all(app.config.passport.authenticate())
 
     // intercepta as requisições put para atualização de categoria por id
     // é necessário ser administrador
@@ -108,22 +108,44 @@ module.exports = (app) => {
     // intercepta as requisições get para consulta de categoria por id
     .get(app.api.category.getById);
 
+  // entrypoint de /articles
   app
     .route("/articles")
-    // .all(app.config.passport.authenticate())
-    .get(admin(app.api.article.get))
-    .post(admin(app.api.article.save));
+    // intercepta todas as requisições para validação de token presente no header Authorization
+    .all(app.config.passport.authenticate())
 
+    // intercepta as requisições post para inclusão de novos artigos
+    // é necessário ser administrador
+    .post(admin(app.api.article.save))
+
+    // intercepta as requisições get para consulta de todos os artigos
+    // é necessário ser administrador
+    .get(admin(app.api.article.get));
+
+  // entrypoint de /articles/:id
   app
     .route("/articles/:id")
-    // .all(app.config.passport.authenticate())
-    .get(app.api.article.getById)
-    .put(admin(app.api.article.save))
-    .delete(admin(app.api.article.remove));
+    // intercepta todas as requisições para validação de token presente no header Authorization
+    .all(app.config.passport.authenticate())
 
+    // intercepta as requisições put para atualização de artigos por id
+    // é necessário ser administrador
+    .put(admin(app.api.article.save))
+
+    // intercepta as requisições delete para exclusão (hard delete) de artigo por id
+    // é necessário ser administrador
+    .delete(admin(app.api.article.remove))
+
+    // intercepta as requisições get para consulta de artigos por id
+    .get(app.api.article.getById);
+
+  // entrypoint de /articles/:id/articles
   app
     .route("/categories/:id/articles")
-    // .all(app.config.passport.authenticate())
+    // intercepta todas as requisições para validação de token presente no header Authorization
+    .all(app.config.passport.authenticate())
+
+    // intercepta as requisições get para consulta de artigos por categoria
     .get(app.api.article.getByCategory);
 
   app
