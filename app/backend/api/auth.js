@@ -10,7 +10,7 @@ const bcrypt = require("bcrypt-nodejs");
 
 // as funções serão injetadas no app (padrão consign)
 module.exports = (app) => {
-  // método para logar no sistema
+  // método para logar no sistema. Retorna o payload e token de autorização
   const signin = async (req, res) => {
     // caso o email ou a senha não tenham sido passados na requisição
     if (!req.body.email || !req.body.password) {
@@ -63,7 +63,7 @@ module.exports = (app) => {
     });
   };
 
-  // método para validar o token
+  // método para validar o token de autorização
   const validateToken = async (req, res) => {
     // atribuindo os dados obtidos a partir do body da requisição caso existam. Caso não existam atribui nulo
     const userData = req.body || null;

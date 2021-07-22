@@ -1,4 +1,4 @@
-// middleware com função de validar o o payload recebido e o token presente no header Authorization
+// middleware com função de validar o payload recebido e o token presente no header Authorization
 
 // importando as dependências
 // importanto a chave secreta para validar o token jwt

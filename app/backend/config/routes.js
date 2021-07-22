@@ -38,7 +38,7 @@ module.exports = (app) => {
   // entrypoint de /users
   app
     .route("/users")
-    // intercepta todas as requisições para validação de token presente no header Authorization
+    // intercepta todas as requisições para validação de payload recebido e token presente no header Authorization
     .all(app.config.passport.authenticate())
 
     // intercepta as requisições post para inclusão de novos usuários
@@ -52,7 +52,7 @@ module.exports = (app) => {
   // entrypoint de /users/:id
   app
     .route("/users/:id")
-    // intercepta todas as requisições para validação de token presente no header Authorization
+    // intercepta todas as requisições para validação de payload recebido e token presente no header Authorization
     .all(app.config.passport.authenticate())
 
     // intercepta as requisições put para atualização de usuário por id
@@ -70,7 +70,7 @@ module.exports = (app) => {
   // entrypoint de /categories
   app
     .route("/categories")
-    // intercepta todas as requisições para validação de token presente no header Authorization
+    // intercepta todas as requisições para validação de payload recebido e token presente no header Authorization
     .all(app.config.passport.authenticate())
 
     // intercepta as requisições post para inclusão de novas categorias
@@ -85,7 +85,7 @@ module.exports = (app) => {
   // cuidado com ordem! Tem que vir antes de /categories/:id
   app
     .route("/categories/tree")
-    // intercepta todas as requisições para validação de token presente no header Authorization
+    // intercepta todas as requisições para validação de payload recebido e token presente no header Authorization
     .all(app.config.passport.authenticate())
 
     // intercepta as requisições get para consulta de categorias organizadas em árvore
@@ -94,7 +94,7 @@ module.exports = (app) => {
   // entrypoint de /categories/:id
   app
     .route("/categories/:id")
-    // intercepta todas as requisições para validação de token presente no header Authorization
+    // intercepta todas as requisições para validação de payload recebido e token presente no header Authorization
     .all(app.config.passport.authenticate())
 
     // intercepta as requisições put para atualização de categoria por id
@@ -111,7 +111,7 @@ module.exports = (app) => {
   // entrypoint de /articles
   app
     .route("/articles")
-    // intercepta todas as requisições para validação de token presente no header Authorization
+    // intercepta todas as requisições para validação de payload recebido e token presente no header Authorization
     .all(app.config.passport.authenticate())
 
     // intercepta as requisições post para inclusão de novos artigos
@@ -125,7 +125,7 @@ module.exports = (app) => {
   // entrypoint de /articles/:id
   app
     .route("/articles/:id")
-    // intercepta todas as requisições para validação de token presente no header Authorization
+    // intercepta todas as requisições para validação de payload recebido e token presente no header Authorization
     .all(app.config.passport.authenticate())
 
     // intercepta as requisições put para atualização de artigos por id
@@ -142,7 +142,7 @@ module.exports = (app) => {
   // entrypoint de /articles/:id/articles
   app
     .route("/categories/:id/articles")
-    // intercepta todas as requisições para validação de token presente no header Authorization
+    // intercepta todas as requisições para validação de payload recebido e token presente no header Authorization
     .all(app.config.passport.authenticate())
 
     // intercepta as requisições get para consulta de artigos por categoria
