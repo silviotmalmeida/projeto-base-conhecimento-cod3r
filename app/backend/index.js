@@ -20,19 +20,19 @@ app.mongoose = mongoose;
 
 // injetando os middlewares no app com o consign
 consign()
-  //
+  // injetando o middleware de validação de payload e token de authorization
   .include("./config/passport.js")
 
   // injetando os middlewares gerais
   .then("./config/middlewares.js")
 
-  //
+  // injetando o middleware de validação de dados
   .then("./api/validation.js")
 
   // injetando os arquivos da pasta api
   .then("./api")
 
-  //
+  // injetando o middleware de agendamento de atualização de estatísticas
   .then("./schedule")
 
   // injetando as rotas

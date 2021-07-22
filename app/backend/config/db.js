@@ -1,3 +1,5 @@
+// arquivo para conexão com o postgresql através do knex
+
 // importando o arquivo principal de configuração do knex
 const config = require("../knexfile.js");
 

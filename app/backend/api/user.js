@@ -81,6 +81,7 @@ module.exports = (app) => {
     if (req.params.id) user.id = req.params.id;
 
     // se a url que chamou este método não iniciar por /users, define o atributo user.admin como false
+    // esta verificação se faz necessária pois o entrypoint /signup também cria novos usuários, porém não administradores
     if (!req.originalUrl.startsWith("/users")) user.admin = false;
 
     // se não estiverem setados o objeto user ou o atributo user.admin, define o atributo user.admin como false
