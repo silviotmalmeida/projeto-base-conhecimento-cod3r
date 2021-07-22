@@ -18,6 +18,12 @@ O projeto encontra-se dockerizado para facilitar a implantação. As orientaçõ
 
 - O backend estará disponível na URL "localhost:4000";
 
+- Para criar um usuário administrador genérico utiliza-se a URL "localhost:4000/createGenericAdmin";
+
+- Para criar categorias genéricas utiliza-se a URL "localhost:4000/createGenericCategories";
+
+- Para criar artigos genéricos utiliza-se a URL "localhost:4000/createGenericArticles";
+
 - Para encerrar a execução utiliza-se o comando "sudo ./stopContainers.sh";
 
 Foram incluídos diversos comentários para facilitar o entendimento do código.
