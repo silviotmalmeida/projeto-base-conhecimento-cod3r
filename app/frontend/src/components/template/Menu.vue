@@ -1,109 +1,130 @@
 <template>
+    <!-- trecho de código que representa o html do componente -->
+    <!-- definindo o componente Menu -->
+    <!-- só será renderizado se o atributo isMenuVisible for true -->
     <aside class="menu" v-show="isMenuVisible">
+
+        <!-- inserindo o formulário de filtro do menu -->
         <div class="menu-filter">
+
+            <!-- inserindo o ícone -->
             <i class="fa fa-search fa-lg"></i>
+
+            <!-- inserindo o formulário -->
             <input type="text" placeholder="Digite para filtrar..."
                 v-model="treeFilter" class="filter-field">
         </div>
+
+        <!-- inserindo o componente da árvore de categorias-->
         <Tree :data="treeData" :options="treeOptions"
             :filter="treeFilter" ref="tree" />
     </aside>
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import Tree from 'liquor-tree'
-import { baseApiUrl } from '@/global'
-import axios from 'axios'
+// trecho de código que representa o comportamento do componente
+
+// importando as dependências
+import { mapState } from "vuex"; //responsável por mapear os atributos da store
+import Tree from "liquor-tree";
+import { baseApiUrl } from "@/global";
+import axios from "axios";
 
 export default {
-    name: 'Menu',
-    components: { Tree },
-    computed: mapState(['isMenuVisible']),
-    data: function() {
-        return {
-            treeFilter: '',
-            treeData: this.getTreeData(),
-            treeOptions: {
-                propertyNames: { 'text': 'name' },
-                filter: { emptyText: 'Categoria não encontrada' }
-            }
-        }
-    },
-    methods: {
-        getTreeData() {
-            const url = `${baseApiUrl}/categories/tree`
-            return axios.get(url).then(res => res.data)
-        },
-        onNodeSelect(node) {
-            this.$router.push({
-                name: 'articlesByCategory',
-                params: { id: node.id }
-            })
+  // definindo o atributo name
+  name: "Menu",
 
-            if(this.$mq === 'xs' || this.$mq === 'sm') {
-                this.$store.commit('toggleMenu', false)
-            }
-        }
+  // definindo os componentes a serem utilizados
+  components: { Tree },
+
+  // obtendo o valor do atributo isMenuVisible da store
+  computed: mapState(["isMenuVisible"]),
+  data: function() {
+    return {
+      treeFilter: "",
+      treeData: this.getTreeData(),
+      treeOptions: {
+        propertyNames: { text: "name" },
+        filter: { emptyText: "Categoria não encontrada" },
+      },
+    };
+  },
+  methods: {
+    getTreeData() {
+      const url = `${baseApiUrl}/categories/tree`;
+      return axios.get(url).then((res) => res.data);
     },
-    mounted() {
-        this.$refs.tree.$on('node:selected', this.onNodeSelect)
-    }
-}
+    onNodeSelect(node) {
+      this.$router.push({
+        name: "articlesByCategory",
+        params: { id: node.id },
+      });
+
+      if (this.$mq === "xs" || this.$mq === "sm") {
+        this.$store.commit("toggleMenu", false);
+      }
+    },
+  },
+  mounted() {
+    this.$refs.tree.$on("node:selected", this.onNodeSelect);
+  },
+};
 </script>
 
 <style>
-    .menu {
-        grid-area: menu;
-        background: linear-gradient(to right, #232526, #414345);
+/* trecho de código que representa o css do componente */
 
-        display: flex;
-        flex-direction: column;
-        flex-wrap: wrap;
-    }
+.menu {
+  grid-area: menu;
+  background: linear-gradient(to right, #232526, #414345);
 
-    .menu a,
-    .menu a:hover {
-        color: #fff;
-        text-decoration: none;
-    }
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
 
-    .menu .tree-node.selected > .tree-content,
-    .menu .tree-node .tree-content:hover {
-        background-color: rgba(255, 255, 255, 0.2);
-    }
+.menu a,
+.menu a:hover {
+  color: #fff;
+  text-decoration: none;
+}
 
-    .tree-arrow.has-child {
-        filter: brightness(2);
-    }
+.menu .tree-node.selected > .tree-content,
+.menu .tree-node .tree-content:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
 
-    .menu .menu-filter {
-        display: flex;
-        justify-content: center;
-        align-items: center;
+.tree-arrow.has-child {
+  filter: brightness(2);
+}
 
-        margin: 20px;
-        padding-bottom: 8px;
-        border-bottom: 1px solid #AAA;
-    }
+.menu .menu-filter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    .menu .menu-filter i {
-        color: #AAA;
-        margin-right: 10px;
-    }
+  margin: 20px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #aaa;
+}
 
-    .menu input {
-        color: #CCC;
-        font-size: 1.3rem;
-        border: 0;
-        outline: 0;
-        width: 100%;
-        background: transparent;
-    }
+.menu .menu-filter i {
+  color: #aaa;
+  margin-right: 10px;
+}
 
-    .tree-filter-empty {
-        color: #CCC;
-        font-size: 1.3rem;
-        margin-left: 20px;
-    }
+.menu input {
+  color: #ccc;
+  font-size: 1.3rem;
+  border: 0;
+  outline: 0;
+  width: 100%;
+  background: transparent;
+}
+
+.tree-filter-empty {
+  color: #ccc;
+  font-size: 1.3rem;
+  margin-left: 20px;
+}
 </style>

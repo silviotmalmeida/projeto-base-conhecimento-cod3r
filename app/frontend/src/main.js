@@ -1,20 +1,32 @@
-import 'font-awesome/css/font-awesome.css'
-import Vue from 'vue'
+// entrypoint da aplicação
 
-import App from './App'
+//importando as dependências
+// importação do font-awesome
+import "font-awesome/css/font-awesome.css";
 
-import './config/bootstrap'
-import './config/msgs'
-import './config/axios'
-import './config/mq'
+import Vue from "vue";
+import App from "./App";
 
-import store from './config/store'
-import router from './config/router'
+import "./config/bootstrap";
+import "./config/msgs";
+import "./config/axios";
+import "./config/mq";
 
-Vue.config.productionTip = false
+// importando a store para compartilhar atributos e comportamentos entre os componentes
+import store from "./config/store";
+import router from "./config/router";
 
+Vue.config.productionTip = false;
+
+//renderizando a aplicação
 new Vue({
+
+  // carregando a store
   store,
   router,
-  render: h => h(App)
-}).$mount('#app')
+
+  // renderiza o componente raiz
+  render: (h) => h(App),
+
+  // na div app do index.html
+}).$mount("#app");
