@@ -69,46 +69,86 @@ export default {
 /* trecho de código que representa o css do componente */
 
 .header {
+  /* definindo o nome do componente no css-grid */
   grid-area: header;
+
+  /* gradiente na cor de fundo */
   background: linear-gradient(to right, #1e469a, #49a7c1);
 
+  /* utilizando flexbox dentro do componente */
   display: flex;
+
+  /* centralizando horizontalmente os componentes internos */
   justify-content: center;
+
+  /* centralizando verticalmente os componentes internos */
   align-items: center;
 }
 
 .title {
+  /* tamanho do texto */
   font-size: 1.2rem;
+
+  /* cor do texto */
   color: #fff;
+
+  /* peso do texto */
   font-weight: 100;
+
+  /* parte do container que irá crescer dento do flex container */
   flex-grow: 1;
+
+  /* alinhamento do texto */
   text-align: center;
 }
 
 .title a {
+  /* cor dos links */
   color: #fff;
+
+  /* retirando o estilo default dos links */
   text-decoration: none;
 }
 
 .title a:hover {
+  /* cor dos links com o mouse sobre o link*/
   color: #fff;
+
+  /* retirando o estilo default dos links com o mouse sobre o link*/
   text-decoration: none;
 }
 
 header.header > a.toggle {
+  /* comprimento do link de ativar/desativar menu */
   width: 60px;
+
+  /* altura do link de ativar/desativar menu */
   height: 100%;
+
+  /* cor do componente interno de ativar/desativar menu */
   color: #fff;
+
+  /* alinhando horizontalmente o link à esquerda */
   justify-self: flex-start;
+
+  /* retirando o estilo default dos links */
   text-decoration: none;
 
+  /* utilizando flexbox dentro do link */
   display: flex;
+
+  /* centralizando horizontalmente os componentes internos */
   justify-content: center;
+
+  /* centralizando verticalmente os componentes internos */
   align-items: center;
 }
 
 header.header > a.toggle:hover {
+  /* cor do link de ativar/desativar menu com o mouse sobre o link */
   color: #fff;
+
+  /* cor de fundo do link de ativar/desativar menu com o mouse sobre o link */
   background-color: rgba(0, 0, 0, 0.2);
 }
 </style>

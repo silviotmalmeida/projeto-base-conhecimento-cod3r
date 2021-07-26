@@ -21,8 +21,13 @@ export default {
 /* trecho de código que representa o css do componente */
 
 .content {
+  /* definindo o nome do componente no css-grid */
   grid-area: content;
+
+  /* cor de fundo */
   background-color: #efefef;
+
+  /* espaçamento interno geral do componente */
   padding: 20px;
 }
 </style>

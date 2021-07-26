@@ -75,11 +75,19 @@ export default {
 /* trecho de código que representa o css do componente */
 
 .menu {
+  /* definindo o nome do componente no css-grid */
   grid-area: menu;
+
+  /* gradiente na cor de fundo */
   background: linear-gradient(to right, #232526, #414345);
 
+  /* utilizando flexbox dentro do componente */
   display: flex;
+
+  /* alterando o eixo principal para coluna */
   flex-direction: column;
+
+  /* permitindo quebras de linha */
   flex-wrap: wrap;
 }
 

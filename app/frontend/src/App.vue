@@ -102,21 +102,33 @@ export default {
 /* trecho de código que representa o css do componente */
 
 * {
+  /* fonte dos textos */
   font-family: "Lato", sans-serif;
 }
 
 body {
+  /* retirando as margens default do browser */
   margin: 0;
 }
 
 #app {
+  /* propriedades para suavizar as fontes  */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
+  /* altura do componente */
   height: 100vh;
+
+  /* utilizando o css-grid dentro do componente*/
   display: grid;
+
+  /* definindo as alturas das linhas de cima para baixo */
   grid-template-rows: 60px 1fr 40px;
+
+  /* definindo o comprimento das colunas da esquerda para direita */
   grid-template-columns: 300px 1fr;
+
+  /* distribuindo as áreas conforme os nomes definidos nos componentes internos */
   grid-template-areas:
     "header header"
     "menu content"
@@ -124,6 +136,8 @@ body {
 }
 
 #app.hide-menu {
+  /* distribuindo as áreas conforme os nomes definidos nos componentes internos */
+  /* utilizado quando o menu estiver oculto */
   grid-template-areas:
     "header header"
     "content content"
