@@ -7,6 +7,7 @@ import "font-awesome/css/font-awesome.css";
 import Vue from "vue";
 import App from "./App";
 
+// importando o bootstrap
 import "./config/bootstrap";
 import "./config/msgs";
 import "./config/axios";
@@ -20,7 +21,6 @@ Vue.config.productionTip = false;
 
 //renderizando a aplicação
 new Vue({
-
   // carregando a store
   store,
   router,

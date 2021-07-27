@@ -5,7 +5,7 @@
 
         <!-- inserindo o botão para exibir/esconder o menu lateral -->
         <!-- o atributo @click é responsável por escutar o evento de click padrão e executar o método toggleMenu() -->
-        <!--só será renderizado se o atributo hideToggle for false -->
+        <!-- só será renderizado se o atributo hideToggle for false -->
         <a class="toggle" @click="toggleMenu" v-if="!hideToggle">
             <!-- inserindo o ícone do fontAwesome -->
             <!-- a classe do ícone será o retorno da função icon() -->
@@ -20,6 +20,7 @@
         </h1>
 
         <!-- inserindo o componente de menu do usuário -->
+        <!-- só será renderizado se o atributo hideUserDropdown for false -->
         <UserDropdown v-if="!hideUserDropdown" />
     </header>
 </template>
@@ -27,8 +28,8 @@
 <script>
 // trecho de código que representa o comportamento do componente
 
-// importando o componente UserDropDown
-import UserDropdown from "./UserDropdown";
+// importando as dependências
+import UserDropdown from "./UserDropdown"; // componente utilizado no menu do usuário
 
 export default {
   // definindo o atributo name
@@ -57,7 +58,7 @@ export default {
 
   // definindo os métodos
   methods: {
-    // utilizando o método toggleMenu da store para alternar o atributo isMenuVisible da store
+    // utiliza o método toggleMenu da store para alternar o atributo isMenuVisible da store
     toggleMenu() {
       this.$store.commit("toggleMenu");
     },
@@ -89,7 +90,7 @@ export default {
   /* tamanho do texto */
   font-size: 1.2rem;
 
-  /* cor do texto */
+  /* cor do texto e ícones */
   color: #fff;
 
   /* peso do texto */

@@ -1,7 +1,9 @@
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
+// importando as dependências do bootstrap para o projeto
 
-import Vue from 'vue'
-import BootstrapVue from 'bootstrap-vue'
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap-vue/dist/bootstrap-vue.css";
 
-Vue.use(BootstrapVue)
+import Vue from "vue";
+import BootstrapVue from "bootstrap-vue";
+
+Vue.use(BootstrapVue);
