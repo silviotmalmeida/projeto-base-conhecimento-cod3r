@@ -3,7 +3,7 @@
   <!-- definindo o componente Content -->  
     <div class="content">
 
-        <!-- inserindo o componente router -->
+        <!-- inserindo o componente router com as definições de rotas -->
         <router-view></router-view>
     </div>
 </template>

@@ -3,7 +3,7 @@
     <!-- definindo o componente Home -->  
     <div class="home">
 
-        <!-- inserindo o componente PageTitle -->
+        <!-- inserindo o título da página com componente PageTitle -->
         <PageTitle icon="fa fa-home" main="Dashboard"
             sub="Base de Conhecimento" />
 
@@ -26,11 +26,13 @@
 </template>
 
 <script>
+// trecho de código que representa o comportamento do componente
+
 // importando as dependências
-import PageTitle from "../template/PageTitle"; // componente de tpitulo da página
+import PageTitle from "../template/PageTitle"; // componente de título da página
 import Stat from "./Stat"; // componente de estatísticas
 import axios from "axios"; // ferramenta para requisições http
-import { baseApiUrl } from "@/global"; // ....
+import { baseApiUrl } from "@/global"; // importando a constante baseApiUrl presente no arquivo global.js
 
 export default {
   // definindo o atributo name
@@ -39,23 +41,31 @@ export default {
   // definindo os componentes a serem utilizados
   components: { PageTitle, Stat },
 
-  // ....
+  // função que retorna um objeto representando o estado do componente
   data: function() {
     return {
+      // estado inicial do componente é vazio
       stat: {},
     };
   },
 
   // definindo os métodos
   methods: {
-    // ....
+    // função responsável por consultar as estatísticas na API
     getStats() {
-      axios.get(`${baseApiUrl}/stats`).then((res) => (this.stat = res.data));
+      // iniciando a requisição http
+      axios
+        // consultando a URL /stats na API
+        .get(`${baseApiUrl}/stats`)
+
+        // em caso de sucesso, popula o estado do componente
+        .then((res) => (this.stat = res.data));
     },
   },
 
-  // ....
+  // função de ciclo de vida, chamada quando o compoenten é montado
   mounted() {
+    // consulta as estatísticas na API
     this.getStats();
   },
 };

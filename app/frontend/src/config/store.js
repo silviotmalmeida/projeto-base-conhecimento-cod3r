@@ -2,7 +2,7 @@
 // permitindo troca de mensagens entre os mesmos
 
 // importando as dependências
-import axios from "axios"; // cliente http
+import axios from "axios"; // ferramenta para requisições http
 import Vue from "vue";
 import Vuex from "vuex"; // controla a store da aplicação
 

@@ -25,10 +25,10 @@
 // trecho de código que representa o comportamento do componente
 
 // importando as dependências
-import { mapState } from "vuex"; //responsável por mapear os atributos da store
-import Tree from "liquor-tree";
-import { baseApiUrl } from "@/global";
-import axios from "axios";
+import { mapState } from "vuex"; // responsável por mapear os atributos da store
+import Tree from "liquor-tree"; // ....
+import { baseApiUrl } from "@/global"; // ....
+import axios from "axios"; // ferramenta para requisições http
 
 export default {
   // definindo o atributo name

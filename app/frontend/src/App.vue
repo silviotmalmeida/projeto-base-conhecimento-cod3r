@@ -30,17 +30,11 @@
 // trecho de código que representa o comportamento do componente
 
 // importando as dependências
-
-//
-import axios from "axios";
-
-//
-import { baseApiUrl, userKey } from "@/global";
-
-//
+import axios from "axios"; // ferramenta para requisições http
+import { baseApiUrl, userKey } from "@/global"; // ....
 import { mapState } from "vuex"; //responsável por mapear os atributos da store
 
-// componentes utilizados na composição deste componente
+// componentes de template utilizados na composição deste componente
 import Header from "@/components/template/Header";
 import Menu from "@/components/template/Menu";
 import Content from "@/components/template/Content";
