@@ -51,11 +51,11 @@ export default {
 
   // definindo os métodos
   methods: {
-    // função responsável por consultar as estatísticas na API
+    // função responsável por consultar as estatísticas via API
     getStats() {
       // iniciando a requisição http
       axios
-        // consultando a URL /stats na API
+        // consultando a URL /stats via API
         .get(`${baseApiUrl}/stats`)
 
         // em caso de sucesso, popula o estado do componente
@@ -63,9 +63,9 @@ export default {
     },
   },
 
-  // função de ciclo de vida, chamada quando o compoenten é montado
+  // função de ciclo de vida, chamada quando o componente é montado
   mounted() {
-    // consulta as estatísticas na API
+    // consulta as estatísticas via API
     this.getStats();
   },
 };

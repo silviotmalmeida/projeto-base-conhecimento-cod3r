@@ -1,7 +1,8 @@
 // as funções serão injetadas no app (padrão consign)
 module.exports = (app) => {
   // importando as funções de validação de dados
-  const { existsOrError, notExistsOrError } = app.api.validation;
+  const { existsOrError, notExistsOrError, notEqualsOrError } =
+    app.api.validation;
 
   // método para inclusão de categorias genéricas para fins de desenvolvimento
   const createGenericCategories = async (req, res) => {
@@ -145,6 +146,13 @@ module.exports = (app) => {
     try {
       // se o nome não for válido, lança mensagem de erro
       existsOrError(category.name, "Nome não informado");
+
+      // se a categoria pai não for válida, lança mensagem de erro
+      notEqualsOrError(
+        category.id,
+        category.parentId,
+        "Categoria Pai deve ser distinta da Categoria Atual"
+      );
     } catch (msg) {
       // se foi lançado algum erro, retorna erro 400
       return res.status(400).send(msg);

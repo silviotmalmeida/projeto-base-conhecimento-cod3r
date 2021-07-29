@@ -28,12 +28,18 @@ module.exports = (app) => {
     throw msg;
   }
 
-  // função que valida se dois valores estritamente são iguais, lançando uma mensagem de erro na falha da validação
+  // função que valida se dois valores são estritamente iguais, lançando uma mensagem de erro na falha da validação
   function equalsOrError(valueA, valueB, msg) {
     // se os valores não forem estritamente iguais lança uma mensagem de erro
     if (valueA !== valueB) throw msg;
   }
 
+  // função que valida se dois valores são estritamente diferentes, lançando uma mensagem de erro na falha da validação
+  function notEqualsOrError(valueA, valueB, msg) {
+    // se os valores não forem estritamente diferentes lança uma mensagem de erro
+    if (valueA == valueB) throw msg;
+  }
+
   // disponibiliza as funções para uso do app (padrão consign)
-  return { existsOrError, notExistsOrError, equalsOrError };
+  return { existsOrError, notExistsOrError, equalsOrError, notEqualsOrError };
 };
