@@ -219,7 +219,7 @@ module.exports = (app) => {
       existsOrError(article.content, "Conteúdo não informado");
     } catch (msg) {
       // se foi lançado algum erro, retorna erro 400
-      res.status(400).send(msg);
+      return res.status(400).send(msg);
     }
 
     // se o atributo article.id estiver setado,

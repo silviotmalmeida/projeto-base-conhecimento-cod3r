@@ -164,7 +164,7 @@ export default {
       // estado inicial do artigo
       article: {},
 
-      // array com a listagem de artigos
+      // array com a listagem de artigos para carregamento da tabela
       articles: [],
 
       // array com a listagem de categorias
@@ -206,6 +206,9 @@ export default {
 
         // em caso de sucesso atualiza os dados do artigo
         .then((res) => (this.article = res.data));
+
+      // movendo o scroll para o topo da página
+      window.scrollTo(0, 0);
     },
     // método responsável por limpar os dados do artigo no componente e formulário
     reset() {
@@ -223,7 +226,7 @@ export default {
       // se existir id, o método de resuisição será put, senão será post
       const method = this.article.id ? "put" : "post";
 
-      // se existir id, será incçuído na URL
+      // se existir id, será incluído na URL
       const id = this.article.id ? `/${this.article.id}` : "";
 
       // realizando a requisição HTTP na URL definida
@@ -264,7 +267,6 @@ export default {
         // em caso de erro, exibe a mensagem de erro
         .catch(showError);
     },
-
     // função responsável por consultar via API os artigos existentes e popular o array de artigos
     // utiliza recursos de paginação na URL
     loadArticles() {
@@ -375,4 +377,5 @@ export default {
 </script>
 
 <style>
+/* trecho de código que representa o css do componente */
 </style>

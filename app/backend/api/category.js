@@ -1,8 +1,12 @@
 // as funções serão injetadas no app (padrão consign)
 module.exports = (app) => {
   // importando as funções de validação de dados
-  const { existsOrError, notExistsOrError, notEqualsOrError } =
-    app.api.validation;
+  const {
+    existsOrError,
+    notExistsOrError,
+    notEqualsOrError,
+    notUndefinedOrError,
+  } = app.api.validation;
 
   // método para inclusão de categorias genéricas para fins de desenvolvimento
   const createGenericCategories = async (req, res) => {
@@ -131,13 +135,17 @@ module.exports = (app) => {
   };
 
   // método para cadastro de categoria e atualização de categoria por id
-  const save = (req, res) => {
+  const save = async (req, res) => {
     // obtendo os dados do body da requisição
     const category = {
       id: req.body.id,
       name: req.body.name,
       parentId: req.body.parentId,
     };
+
+    // consultando as categorias existentes no bd
+    // iniciando processamento síncrono
+    const categories = await app.db("categories");
 
     // se na requisição estiver setado o atributo id, preenche o category.id
     if (req.params.id) category.id = req.params.id;
@@ -147,12 +155,34 @@ module.exports = (app) => {
       // se o nome não for válido, lança mensagem de erro
       existsOrError(category.name, "Nome não informado");
 
-      // se a categoria pai não for válida, lança mensagem de erro
-      notEqualsOrError(
-        category.id,
+      // se a categoria pai não for definida ou nula, lança mensagem de erro
+      notUndefinedOrError(
         category.parentId,
-        "Categoria Pai deve ser distinta da Categoria Atual"
+        "Selecione uma categoria pai válida"
       );
+
+      // se o id existir:
+      if (category.id) {
+        // se a categoria pai não for distinta da categoria atual, lança mensagem de erro
+        notEqualsOrError(
+          category.id,
+          category.parentId,
+          "Categoria Pai deve ser distinta da Categoria Atual"
+        );
+
+        // obtendo os id das subcategorias
+        const descendents = getDescendents(categories, category.id);
+
+        // iterando o conjunto de subcategorias
+        descendents.forEach((value) => {
+          // se a categoria pai não for distita das subcategorias, lança mensagem de erro
+          notEqualsOrError(
+            category.parentId,
+            value,
+            "Categoria Pai deve ser distinta das Subcategorias"
+          );
+        });
+      }
     } catch (msg) {
       // se foi lançado algum erro, retorna erro 400
       return res.status(400).send(msg);
@@ -293,6 +323,36 @@ module.exports = (app) => {
 
     // retornando o array de categorias com o relacionamentos ordenada alfabeticamente
     return categoriesWithPath;
+  };
+
+  // função que retorna os id das subcategorias de uma determinada categoria
+  // recebe o array com todas as categorias e o id da categoria pai
+  const getDescendents = (categories, id) => {
+    // criando o conjunto vazio dos descendentes
+    let descendents = new Set();
+
+    // função auxiliar responsável por retornar os id das subcategorias de uma determinada categoria
+    // recebe o conjunto de descendentes a ser incrementeado e o id da categoria pai
+    const getChildren = (descendents, fatherId) => {
+      // iterando no array de categorias e filtrando pelo id informado
+      const children = categories.filter(
+        (category) => category.parentId == fatherId
+      );
+
+      // se existir alguma subcategoria, popula o conjunto de descendentes, senão retorna nulo
+      return children.length
+        ? children.map((child) => descendents.add(child.id))
+        : null;
+    };
+
+    // obtendo os id das subcategorias imediatas
+    getChildren(descendents, id);
+
+    // incremendando os demais descendentes de forma recursiva
+    descendents.forEach((value) => getChildren(descendents, value));
+
+    // retorna o conjunto de descendentes
+    return descendents;
   };
 
   // método para consulta de categorias

@@ -27,11 +27,23 @@
             <!-- será renderizado somente se o atributo mode seja 'save' -->            
             <b-form-group label="Categoria Pai:" label-for="category-parentId" v-if="mode === 'save'">
 
-                <!-- inserindo o select para o dado de categoria pai usando o bootstrap-vue  -->
+                <!-- inserindo o selectbox para o dado de categoria pai usando o bootstrap-vue  -->
                 <!-- a propriedade :options carrega as opções a partir do array passado -->
                 <!-- a propriedade v-model faz a ligação com o objeto -->
                 <b-form-select id="category-parentId"
-                    :options="categories" v-model="category.parentId" />                
+                    :options="categoriesOptions" v-model="category.parentId" />                
+            </b-form-group>
+
+            <!-- inserindo o form-group para o dado de caminho usando o bootstrap-vue -->
+            <!-- será renderizado somente se o atributo mode seja diferente de 'save' -->            
+            <b-form-group label="Caminho:" label-for="category-path" v-else>
+
+                <!-- inserindo o input para o dado de caminho usando o bootstrap-vue  -->
+                <!-- a propriedade v-model faz a ligação com o objeto -->
+                <!-- a propriedade :readonly será true -->
+                <b-form-input id="category-path" type="text"
+                    v-model="category.path"
+                    :readonly="true" />              
             </b-form-group>
 
             <!-- inserindo o botão de salvar usando o bootstrap-vue -->
@@ -83,16 +95,32 @@
 </template>
 
 <script>
-import { baseApiUrl, showError } from "@/global";
-import axios from "axios";
+// trecho de código que representa o comportamento do componente
+
+// importando as dependências
+import { baseApiUrl, showError } from "@/global"; // importando a constante baseApiUrl e a função showError() presente no arquivo global.js
+import axios from "axios"; // ferramenta para requisições http
 
 export default {
+  // definindo o atributo name
   name: "CategoryAdmin",
+
+  // função que retorna um objeto representando o estado do componente
   data: function() {
     return {
+      // modo de exibição do formulário
       mode: "save",
+
+      // estado inicial da categoria
       category: {},
+
+      // array com a listagem de categorias para carregamento da tabela
       categories: [],
+
+      // array com a listagem de categorias formatadas para carregamento do selectbox
+      categoriesOptions: [],
+
+      // cabeçalhos da tabela de listagem de categorias
       fields: [
         { key: "id", label: "Código", sortable: true },
         { key: "name", label: "Nome", sortable: true },
@@ -102,50 +130,124 @@ export default {
     };
   },
   methods: {
-    loadCategories() {
-      const url = `${baseApiUrl}/categories`;
-      axios.get(url).then((res) => {
-        // this.categories = res.data
-        this.categories = res.data.map((category) => {
-          return { ...category, value: category.id, text: category.path };
-        });
-      });
+    // método responsável por atualizar os dados da categoria no componente e formulário
+    // atualiza também o modo de exibição do formulário (por padrão "save")
+    loadCategory(category, mode = "save") {
+      // atualizando o modo de exibição do formulário
+      this.mode = mode;
+
+      // atualiza os dados da categoria
+      this.category = { ...category };
+
+      // movendo o scroll para o topo da página
+      window.scrollTo(0, 0);
     },
+    // método responsável por limpar os dados da categoria no componente e formulário
     reset() {
+      // atualizando o modo de exibição do formulário para o inicial
       this.mode = "save";
+
+      // limpando os dados da categoria
       this.category = {};
+
+      // recarregando a listagem de categorias
       this.loadCategories();
     },
+    // método responsável por criar ou atualizar a categoria via API
     save() {
+      // se existir id, o método de resuisição será put, senão será post
       const method = this.category.id ? "put" : "post";
+
+      // se existir id, será incluído na URL
       const id = this.category.id ? `/${this.category.id}` : "";
+
+      // realizando a requisição HTTP na URL definida
       axios[method](`${baseApiUrl}/categories${id}`, this.category)
+
+        // em caso de sucesso:
         .then(() => {
+          // ....
           this.$toasted.global.defaultSuccess();
+
+          // limpa os dados da categoria e do formulário
           this.reset();
         })
+
+        // em caso de erro, exibe a mensagem de erro
         .catch(showError);
     },
+    // método responsável por excluir a categoria via API
     remove() {
+      // definindo o id do artigo
       const id = this.category.id;
+
+      // realizando a requisição HTTP:
       axios
+
+        // na URL definida com o método delete
         .delete(`${baseApiUrl}/categories/${id}`)
+
+        // em caso de sucesso:
         .then(() => {
+          // ....
           this.$toasted.global.defaultSuccess();
+
+          // limpa os dados da categoria e do formulário
           this.reset();
         })
+
+        // em caso de erro, exibe a mensagem de erro
         .catch(showError);
     },
-    loadCategory(category, mode = "save") {
-      this.mode = mode;
-      this.category = { ...category };
+    // função responsável por consultar via API as categorias existentes e popular os arrays de categorias para listagem na tabela e selectbox
+    loadCategories() {
+      // definindo a URL a ser consultada
+      const url = `${baseApiUrl}/categories`;
+
+      // definindo a opção default para exibição no selectbox
+      const defaultOption = [
+        {
+          value: undefined,
+          text: "Selecione uma Categoria Pai...",
+        },
+        {
+          value: null,
+          text: "",
+        },
+      ];
+
+      // inicializando o array de categorias vazio
+      let categoriesList = [];
+
+      // realizando a requisição HTTP
+      axios
+
+        // na URL definida
+        .get(url)
+
+        // em caso de sucesso:
+        .then((res) => {
+          // popula o array de categorias para listagem na tabela
+          this.categories = res.data;
+
+          // montando o array de categorias para listagem na no selectbox
+          categoriesList = res.data.map((category) => {
+            return { value: category.id, text: category.name };
+          });
+
+          // montando o array de categorias com a opção default para carregamento no selectbox
+          this.categoriesOptions = defaultOption.concat(categoriesList);
+        });
     },
   },
+  // função de ciclo de vida, chamada quando o componente é montado
   mounted() {
+    // carrega os arrays de categorias
     this.loadCategories();
   },
 };
 </script>
 
 <style>
+/* trecho de código que representa o css do componente */
 </style>

@@ -40,6 +40,16 @@ module.exports = (app) => {
     if (valueA == valueB) throw msg;
   }
 
+  function notUndefinedOrError(valueA, msg) {
+    if (valueA === undefined) throw msg;
+  }
+
   // disponibiliza as funções para uso do app (padrão consign)
-  return { existsOrError, notExistsOrError, equalsOrError, notEqualsOrError };
+  return {
+    existsOrError,
+    notExistsOrError,
+    equalsOrError,
+    notEqualsOrError,
+    notUndefinedOrError,
+  };
 };
