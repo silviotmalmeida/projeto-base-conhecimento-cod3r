@@ -158,7 +158,7 @@ module.exports = (app) => {
       // se a categoria pai não for definida ou nula, lança mensagem de erro
       notUndefinedOrError(
         category.parentId,
-        "Selecione uma categoria pai válida"
+        "Selecione uma Categoria Pai válida"
       );
 
       // se o id existir:

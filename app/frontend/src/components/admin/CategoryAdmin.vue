@@ -75,7 +75,7 @@
             <template slot="actions" slot-scope="data">
 
                 <!-- inserindo o botão de editar -->
-                <!-- o atributo @click é responsável por escutar o evento de click padrão e executar o método loadArticle() -->
+                <!-- o atributo @click é responsável por escutar o evento de click padrão e executar o método loadCategory() -->
                 <b-button variant="warning" @click="loadCategory(data.item)" class="mr-2">
                     
                     <!-- inserindo o ícone do botão -->
@@ -83,7 +83,7 @@
                 </b-button>
 
                 <!-- inserindo o botão de excluir -->
-                <!-- o atributo @click é responsável por escutar o evento de click padrão e executar o método loadArticle() com a variação de remove -->
+                <!-- o atributo @click é responsável por escutar o evento de click padrão e executar o método loadCategory() com a variação de remove -->
                 <b-button variant="danger" @click="loadCategory(data.item, 'remove')">
                     
                     <!-- inserindo o ícone do botão -->
