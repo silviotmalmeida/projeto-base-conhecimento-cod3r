@@ -98,7 +98,7 @@
 // trecho de código que representa o comportamento do componente
 
 // importando as dependências
-import { baseApiUrl, showError } from "@/global"; // importando a constante baseApiUrl e a função showError() presente no arquivo global.js
+import { baseApiUrl, showError } from "@/global"; // importando a constante baseApiUrl e o método showError() presente no arquivo global.js
 import axios from "axios"; // ferramenta para requisições http
 
 export default {
@@ -167,7 +167,7 @@ export default {
 
         // em caso de sucesso:
         .then(() => {
-          // ....
+          // exibindo mensagem de sucesso
           this.$toasted.global.defaultSuccess();
 
           // limpa os dados da categoria e do formulário
@@ -190,7 +190,7 @@ export default {
 
         // em caso de sucesso:
         .then(() => {
-          // ....
+          // exibindo mensagem de sucesso
           this.$toasted.global.defaultSuccess();
 
           // limpa os dados da categoria e do formulário

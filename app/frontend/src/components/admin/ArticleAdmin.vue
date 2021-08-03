@@ -145,7 +145,7 @@
 
 // importando as dependências
 import { VueEditor } from "vue2-editor"; // componente de edição de texto
-import { baseApiUrl, showError } from "@/global"; // importando a constante baseApiUrl e a função showError() presente no arquivo global.js
+import { baseApiUrl, showError } from "@/global"; // importando a constante baseApiUrl e o método showError() presente no arquivo global.js
 import axios from "axios"; // ferramenta para requisições http
 
 export default {
@@ -235,7 +235,7 @@ export default {
 
         // em caso de sucesso:
         .then(() => {
-          // ....
+          // exibindo mensagem de sucesso
           this.$toasted.global.defaultSuccess();
 
           // limpa os dados do artigo e do formulário
@@ -258,7 +258,7 @@ export default {
 
         // em caso de sucesso:
         .then(() => {
-          // ....
+          // exibindo mensagem de sucesso
           this.$toasted.global.defaultSuccess();
 
           // limpa os dados do artigo e do formulário
