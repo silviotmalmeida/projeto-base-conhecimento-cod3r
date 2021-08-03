@@ -152,16 +152,26 @@
 // trecho de código que representa o comportamento do componente
 
 // importando as dependências
-import { baseApiUrl, showError } from "@/global";
-import axios from "axios";
+import { baseApiUrl, showError } from "@/global"; // importando a constante baseApiUrl e a função showError() presente no arquivo global.js
+import axios from "axios"; // ferramenta para requisições http
 
 export default {
+  // definindo o atributo name
   name: "UserAdmin",
+
+  // função que retorna um objeto representando o estado do componente
   data: function() {
     return {
+      // modo de exibição do formulário
       mode: "save",
+
+      // estado inicial do usuário
       user: {},
+
+      // array com a listagem de usuários para carregamento da tabela
       users: [],
+
+      // cabeçalhos da tabela de listagem de usuários
       fields: [
         { key: "id", label: "Código", sortable: true },
         { key: "name", label: "Nome", sortable: true },
@@ -176,48 +186,102 @@ export default {
       ],
     };
   },
+  // definindo os métodos
   methods: {
-    loadUsers() {
-      const url = `${baseApiUrl}/users`;
-      axios.get(url).then((res) => {
-        this.users = res.data;
-      });
+    // método responsável por atualizar os dados do usuário no componente e formulário
+    // atualiza também o modo de exibição do formulário (por padrão "save")
+    loadUser(user, mode = "save") {
+      // atualizando o modo de exibição do formulário
+      this.mode = mode;
+
+      // atualiza os dados do usuário
+      this.user = { ...user };
+
+      // movendo o scroll para o topo da página
+      window.scrollTo(0, 0);
     },
+    // método responsável por limpar os dados do usuário no componente e formulário
     reset() {
+      // atualizando o modo de exibição do formulário para o inicial
       this.mode = "save";
+
+      // limpando os dados do usuário
       this.user = {};
+
+      // recarregando a listagem de usuários
       this.loadUsers();
     },
+    // método responsável por criar ou atualizar o usuário via API
     save() {
+      // se existir id, o método de requisição será put, senão será post
       const method = this.user.id ? "put" : "post";
+
+      // se existir id, será incluído na URL
       const id = this.user.id ? `/${this.user.id}` : "";
+
+      // realizando a requisição HTTP na URL definida
       axios[method](`${baseApiUrl}/users${id}`, this.user)
+
+        // em caso de sucesso:
         .then(() => {
+          // ....
           this.$toasted.global.defaultSuccess();
+
+          // limpa os dados do usuário e do formulário
           this.reset();
         })
+
+        // em caso de erro, exibe a mensagem de erro
         .catch(showError);
     },
+    // método responsável por excluir a categoria via API
     remove() {
+      // definindo o id do usuário
       const id = this.user.id;
+
+      // realizando a requisição HTTP:
       axios
+
+        // na URL definida com o método delete
         .delete(`${baseApiUrl}/users/${id}`)
+
+        // em caso de sucesso:
         .then(() => {
+          // ....
           this.$toasted.global.defaultSuccess();
+
+          // limpa os dados do usuário e do formulário
           this.reset();
         })
+
+        // em caso de erro, exibe a mensagem de erro
         .catch(showError);
     },
-    loadUser(user, mode = "save") {
-      this.mode = mode;
-      this.user = { ...user };
+    loadUsers() {
+      // definindo a URL a ser consultada
+      const url = `${baseApiUrl}/users`;
+
+      // realizando a requisição HTTP
+      axios
+
+        // na URL definida
+        .get(url)
+
+        // em caso de sucesso:
+        .then((res) => {
+          // popula o array de usuários para listagem na tabela
+          this.users = res.data;
+        });
     },
   },
+  // função de ciclo de vida, chamada quando o componente é montado
   mounted() {
+    // carrega o array de usuários
     this.loadUsers();
   },
 };
 </script>
 
 <style>
+/* trecho de código que representa o css do componente */
 </style>

@@ -56,6 +56,7 @@ export default {
       validatingToken: true,
     };
   },
+  // definindo os métodos
   methods: {
     async validateToken() {
       this.validatingToken = true;

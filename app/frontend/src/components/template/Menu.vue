@@ -49,6 +49,7 @@ export default {
       },
     };
   },
+  // definindo os métodos
   methods: {
     getTreeData() {
       const url = `${baseApiUrl}/categories/tree`;

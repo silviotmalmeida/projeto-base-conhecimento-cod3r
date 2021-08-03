@@ -191,6 +191,7 @@ export default {
       ],
     };
   },
+  // definindo os métodos
   methods: {
     // método responsável por atualizar os dados do artigo no componente e formulário
     // atualiza também o modo de exibição do formulário (por padrão "save")
@@ -223,7 +224,7 @@ export default {
     },
     // método responsável por criar ou atualizar o artigo via API
     save() {
-      // se existir id, o método de resuisição será put, senão será post
+      // se existir id, o método de requisição será put, senão será post
       const method = this.article.id ? "put" : "post";
 
       // se existir id, será incluído na URL

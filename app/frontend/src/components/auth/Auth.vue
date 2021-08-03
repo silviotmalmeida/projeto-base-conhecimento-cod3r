@@ -34,6 +34,7 @@ export default {
             user: {}
         }
     },
+    // definindo os métodos
     methods: {
         signin() {
             axios.post(`${baseApiUrl}/signin`, this.user)

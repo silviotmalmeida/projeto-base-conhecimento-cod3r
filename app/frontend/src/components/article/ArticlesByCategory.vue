@@ -32,6 +32,7 @@ export default {
             loadMore: true
         }
     },
+    // definindo os métodos
     methods: {
         getCategory() {
             const url = `${baseApiUrl}/categories/${this.category.id}`
