@@ -357,9 +357,11 @@ export default {
         });
     },
   },
-  // ....
+  // lista de observers
   watch: {
+    // quando o valor do atributo page alterar:
     page() {
+      // recarregando a listagem de artigos
       this.loadArticles();
     },
   },

@@ -40,10 +40,10 @@
 
                 <!-- inserindo o input para o dado de caminho usando o bootstrap-vue  -->
                 <!-- a propriedade v-model faz a ligação com o objeto -->
-                <!-- a propriedade :readonly será true -->
+                <!-- somente leitura -->
                 <b-form-input id="category-path" type="text"
                     v-model="category.path"
-                    :readonly="true" />              
+                    readonly />              
             </b-form-group>
 
             <!-- inserindo o botão de salvar usando o bootstrap-vue -->
