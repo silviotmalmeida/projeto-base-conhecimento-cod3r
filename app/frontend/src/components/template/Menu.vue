@@ -16,6 +16,10 @@
         </div>
 
         <!-- inserindo o componente da árvore de categorias-->
+        <!-- a propriedade :data carrega os dados da árvore -->
+        <!-- a propriedade :options carrega as opções de configuração da árvore -->
+        <!-- a propriedade :filter carrega o filtro a ser aplicado na árvore -->
+        <!-- a propriedade ref indica um alias para os métodos referenciarem a árvore -->
         <Tree :data="treeData" :options="treeOptions"
             :filter="treeFilter" ref="tree" />
     </aside>
@@ -26,8 +30,8 @@
 
 // importando as dependências
 import { mapState } from "vuex"; // responsável por mapear os atributos da store
-import Tree from "liquor-tree"; // ....
-import { baseApiUrl } from "@/global"; // ....
+import Tree from "liquor-tree"; // responsável por desenhar a árvore de categorias
+import { baseApiUrl } from "@/global"; // importando a constante baseApiUrl presente no arquivo global.js
 import axios from "axios"; // ferramenta para requisições http
 
 export default {
@@ -39,22 +43,45 @@ export default {
 
   // obtendo o valor do atributo isMenuVisible da store
   computed: mapState(["isMenuVisible"]),
+
+  // função que retorna um objeto representando o estado do componente
   data: function() {
     return {
+      // valor do filtro a ser aplicado na árvore
       treeFilter: "",
+
+      // chamada para a função que retornará a árvore
       treeData: this.getTreeData(),
+
+      // opções da árvore
       treeOptions: {
+        // definindo o nome da propriedade que será utilizada como label dos nós da árvore
         propertyNames: { text: "name" },
+
+        // definindo o texto a ser exibido quando o resultado da filtragem for vazio
         filter: { emptyText: "Categoria não encontrada" },
       },
     };
   },
   // definindo os métodos
   methods: {
+    // função responsável por obter a árvore de categorias
     getTreeData() {
+      // definindo a URL
       const url = `${baseApiUrl}/categories/tree`;
-      return axios.get(url).then((res) => res.data);
+
+      // realizando a requisição HTTP
+      return (
+        axios
+
+          // na URL definida
+          .get(url)
+
+          // em caso de sucesso, retorna a árvore de categorias
+          .then((res) => res.data)
+      );
     },
+
     onNodeSelect(node) {
       this.$router.push({
         name: "articlesByCategory",
@@ -66,7 +93,10 @@ export default {
       }
     },
   },
+  // função de ciclo de vida, chamada quando o componente é montado
   mounted() {
+
+    // ....
     this.$refs.tree.$on("node:selected", this.onNodeSelect);
   },
 };
@@ -94,16 +124,24 @@ export default {
 
 .menu a,
 .menu a:hover {
+
+  /* cor do texto */
   color: #fff;
+
+  /* removendo a formatação default do link */
   text-decoration: none;
 }
 
 .menu .tree-node.selected > .tree-content,
 .menu .tree-node .tree-content:hover {
+
+  /* cor de fundo */
   background-color: rgba(255, 255, 255, 0.2);
 }
 
 .tree-arrow.has-child {
+
+  /* .... */
   filter: brightness(2);
 }
 
