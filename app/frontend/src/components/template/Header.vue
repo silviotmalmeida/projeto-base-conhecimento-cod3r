@@ -15,7 +15,7 @@
         <!-- inserindo o título -->
         <h1 class="title">
             <!-- insere um link para a URL "/" -->
-            <!-- insere o texto recebino pelo atributo title -->
+            <!-- insere o texto recebido pelo atributo title -->
             <router-link to="/">{{ title }}</router-link>
         </h1>
 

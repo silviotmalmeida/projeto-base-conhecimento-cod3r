@@ -73,7 +73,7 @@ export default {
 
       // realizando a requisição HTTP na URL definida
       axios(url)
-        // em caso de sucesso, carreaga os dados da categoria
+        // em caso de sucesso, carrega os dados da categoria
         .then((res) => (this.category = res.data));
     },
     // método responsável por carregar os artigos da categoria
