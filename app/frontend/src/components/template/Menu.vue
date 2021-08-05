@@ -42,7 +42,7 @@ export default {
   components: { Tree },
 
   // obtendo o valor do atributo isMenuVisible da store
-  computed: mapState(["isMenuVisible"]),
+  computed: mapState(["isMenuVisible", "isMenuChanged"]),
 
   // função que retorna um objeto representando o estado do componente
   data: function() {
@@ -55,7 +55,7 @@ export default {
 
       // opções da árvore
       treeOptions: {
-        // definindo o nome da propriedade que será utilizada como label dos nós da árvore
+        // definindo o nome da propriedade que será utilizada como label dos nós da árvore (name)
         propertyNames: { text: "name" },
 
         // definindo o texto a ser exibido quando o resultado da filtragem for vazio
@@ -77,26 +77,45 @@ export default {
           // na URL definida
           .get(url)
 
-          // em caso de sucesso, retorna a árvore de categorias
+          // em caso de sucesso, retorna uma Promise para a árvore de categorias
           .then((res) => res.data)
       );
     },
-
+    // método responsável pela navegação do menu
+    // recebe como parâmetro um dos nós da árvore
     onNodeSelect(node) {
+      // redireciona a URL para a página com os artigos por categoria
+      // usa o nome da rota definido no router e o id da categoria/nó recebido por parâmetro
       this.$router.push({
         name: "articlesByCategory",
         params: { id: node.id },
       });
 
+      // deselecionando o nó para permitir reclick
+      node.unselect();
+
+      // ....
       if (this.$mq === "xs" || this.$mq === "sm") {
         this.$store.commit("toggleMenu", false);
       }
     },
   },
+  // lista de observers
+  watch: {
+    // quando o valor do atributo page alterar:
+    isMenuChanged() {
+      
+      console.log("mudou")
+
+    },
+  },
   // função de ciclo de vida, chamada quando o componente é montado
   mounted() {
 
-    // ....
+
+console.log(this.isMenuChanged)
+
+    // monitora o evento de seleção de algum nó da árvore e dispara o método onNodeSelect()
     this.$refs.tree.$on("node:selected", this.onNodeSelect);
   },
 };
@@ -124,7 +143,6 @@ export default {
 
 .menu a,
 .menu a:hover {
-
   /* cor do texto */
   color: #fff;
 
@@ -134,13 +152,11 @@ export default {
 
 .menu .tree-node.selected > .tree-content,
 .menu .tree-node .tree-content:hover {
-
-  /* cor de fundo */
+  /* cor de fundo no nó selecionado e em hover */
   background-color: rgba(255, 255, 255, 0.2);
 }
 
 .tree-arrow.has-child {
-
   /* .... */
   filter: brightness(2);
 }

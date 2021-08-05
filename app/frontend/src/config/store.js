@@ -17,6 +17,9 @@ export default new Vuex.Store({
     // define a visibilidade atual do menu lateral
     isMenuVisible: false,
 
+    // define a necessidade de recarregar o menu lateral
+    isMenuChanged: false,
+
     // define se existe usuário logado atualmente
     user: null,
   },
@@ -39,6 +42,20 @@ export default new Vuex.Store({
       // senão aplica o valor do parâmetro
       else {
         state.isMenuVisible = isVisible;
+      }
+    },
+    // método responsável por alternar o valor do atributo isMenuChanged
+    // recebe como parâmetro o estado atual e um booleano que indica a necessidade de atualizar o menu
+    reloadMenu(state, reload) {
+      console.log("rodei fora");
+
+      // se o parâmetro não for informado, alterna o valor do atributo isMenuChanged
+      if (reload === undefined) {
+        state.isMenuChanged = !state.isMenuChanged;
+      }
+      // senão aplica o valor do parâmetro
+      else {
+        state.isMenuChanged = reload;
       }
     },
     setUser(state, user) {
