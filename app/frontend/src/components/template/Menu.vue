@@ -42,7 +42,7 @@ export default {
   components: { Tree },
 
   // obtendo o valor do atributo isMenuVisible da store
-  computed: mapState(["isMenuVisible", "isMenuChanged"]),
+  computed: mapState(["isMenuVisible"]),
 
   // função que retorna um objeto representando o estado do componente
   data: function() {
@@ -100,21 +100,8 @@ export default {
       }
     },
   },
-  // lista de observers
-  watch: {
-    // quando o valor do atributo page alterar:
-    isMenuChanged() {
-      
-      console.log("mudou")
-
-    },
-  },
   // função de ciclo de vida, chamada quando o componente é montado
   mounted() {
-
-
-console.log(this.isMenuChanged)
-
     // monitora o evento de seleção de algum nó da árvore e dispara o método onNodeSelect()
     this.$refs.tree.$on("node:selected", this.onNodeSelect);
   },

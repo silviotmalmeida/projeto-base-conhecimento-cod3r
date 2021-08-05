@@ -173,7 +173,8 @@ export default {
           // limpa os dados da categoria e do formulário
           this.reset();
 
-           this.reloadMenu();
+          // recarrega a página para atualizar o menu
+          window.location.reload();
         })
 
         // em caso de erro, exibe a mensagem de erro
@@ -198,7 +199,8 @@ export default {
           // limpa os dados da categoria e do formulário
           this.reset();
 
-           this.reloadMenu();
+          // recarrega a página para atualizar o menu
+          window.location.reload();
         })
 
         // em caso de erro, exibe a mensagem de erro
@@ -242,17 +244,7 @@ export default {
 
           // montando o array de categorias com a opção default para carregamento no selectbox
           this.categoriesOptions = defaultOption.concat(categoriesList);
-
-         
         });
-
-      
-    },
-    // utiliza o método reloadMenu da store para alternar o atributo isMenuChanged da store
-    reloadMenu() {
-
-      console.log("rodei dentro")
-      this.$store.commit("reloadMenu");
     },
   },
   // função de ciclo de vida, chamada quando o componente é montado
