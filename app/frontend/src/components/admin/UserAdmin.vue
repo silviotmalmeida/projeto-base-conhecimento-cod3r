@@ -154,10 +154,14 @@
 // importando as dependências
 import { baseApiUrl, showError } from "@/global"; // importando a constante baseApiUrl e o método showError() presente no arquivo global.js
 import axios from "axios"; // ferramenta para requisições http
+import { mapState } from "vuex"; //responsável por mapear os atributos da store
 
 export default {
   // definindo o atributo name
   name: "UserAdmin",
+
+  // obtendo o valor do atributo keyUsersReload da store
+  computed: mapState(["keyUsersReload"]),
 
   // função que retorna um objeto representando o estado do componente
   data: function() {
@@ -207,9 +211,6 @@ export default {
 
       // limpando os dados do usuário
       this.user = {};
-
-      // recarregando a listagem de usuários
-      this.loadUsers();
     },
     // método responsável por criar ou atualizar o usuário via API
     save() {
@@ -229,6 +230,9 @@ export default {
 
           // limpa os dados do usuário e do formulário
           this.reset();
+
+          // dispara a atualização dos usuários nos diversos componentes
+          this.reloadUsers()
         })
 
         // em caso de erro, exibe a mensagem de erro
@@ -252,6 +256,9 @@ export default {
 
           // limpa os dados do usuário e do formulário
           this.reset();
+
+          // dispara a atualização dos usuários nos diversos componentes
+          this.reloadUsers()
         })
 
         // em caso de erro, exibe a mensagem de erro
@@ -272,6 +279,18 @@ export default {
           // popula o array de usuários para listagem na tabela
           this.users = res.data;
         });
+    },
+    // utiliza o método reloadUsers da store para forçar a atualização dos diversos componentes
+    reloadUsers() {
+      this.$store.commit("reloadUsers");
+    },
+  },
+  // lista de observers
+  watch: {
+    // quando o valor do atributo keyUsersReload alterar:
+    keyUsersReload() {
+      // recarregando as listagens de categorias
+      this.loadUsers();
     },
   },
   // função de ciclo de vida, chamada quando o componente é montado

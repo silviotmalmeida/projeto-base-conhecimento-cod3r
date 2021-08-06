@@ -100,10 +100,14 @@
 // importando as dependências
 import { baseApiUrl, showError } from "@/global"; // importando a constante baseApiUrl e o método showError() presente no arquivo global.js
 import axios from "axios"; // ferramenta para requisições http
+import { mapState } from "vuex"; //responsável por mapear os atributos da store
 
 export default {
   // definindo o atributo name
   name: "CategoryAdmin",
+
+  // obtendo o valor do atributo keyCategoriesReload da store
+  computed: mapState(["keyCategoriesReload"]),
 
   // função que retorna um objeto representando o estado do componente
   data: function() {
@@ -150,9 +154,6 @@ export default {
 
       // limpando os dados da categoria
       this.category = {};
-
-      // recarregando a listagem de categorias
-      this.loadCategories();
     },
     // método responsável por criar ou atualizar a categoria via API
     save() {
@@ -173,8 +174,8 @@ export default {
           // limpa os dados da categoria e do formulário
           this.reset();
 
-          // recarrega a página para atualizar o menu
-          window.location.reload();
+          // dispara a atualização das categorias nos diversos componentes
+          this.reloadCategories()
         })
 
         // em caso de erro, exibe a mensagem de erro
@@ -199,8 +200,8 @@ export default {
           // limpa os dados da categoria e do formulário
           this.reset();
 
-          // recarrega a página para atualizar o menu
-          window.location.reload();
+          // dispara a atualização das categorias nos diversos componentes
+          this.reloadCategories()
         })
 
         // em caso de erro, exibe a mensagem de erro
@@ -245,6 +246,18 @@ export default {
           // montando o array de categorias com a opção default para carregamento no selectbox
           this.categoriesOptions = defaultOption.concat(categoriesList);
         });
+    },
+    // utiliza o método reloadCategories da store para forçar a atualização dos diversos componentes
+    reloadCategories() {
+      this.$store.commit("reloadCategories");
+    },
+  },
+  // lista de observers
+  watch: {
+    // quando o valor do atributo keyCategoriesReload alterar:
+    keyCategoriesReload() {
+      // recarregando as listagens de categorias
+      this.loadCategories();
     },
   },
   // função de ciclo de vida, chamada quando o componente é montado

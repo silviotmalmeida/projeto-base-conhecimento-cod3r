@@ -294,7 +294,7 @@ module.exports = (app) => {
   };
 
   // definindo a quantidade máxima de registros por página
-  const limit = 10;
+  const limit = 5;
 
   // método para consulta de artigos
   const get = async (req, res) => {

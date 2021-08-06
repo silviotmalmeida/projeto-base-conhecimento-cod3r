@@ -13,16 +13,21 @@
 			:hideUserDropdown="!user" />
 
 		<!-- inserindo o componente Menu -->
-		<Menu v-if="user" />
+    <!-- so será renderizada se o usuário estiver logado -->
+    <!-- a propriedade :key vincula o componente a uma chave que quando é alterada, recarrega o componente -->
+		<Menu v-if="user" :key="keyCategoriesReload"/>
 
-		<!-- inserindo o componente Loading -->
+    <!-- se o token de validação for válido -->
+		<!-- insere o componente Loading -->
 		<Loading v-if="validatingToken" />
 
-		<!-- inserindo o componente Content -->
+    <!-- senão -->
+		<!-- insere o componente Content -->
 		<Content v-else />
 
 		<!-- inserindo o componente Footer -->
 		<Footer />
+
 	</div>
 </template>
 
@@ -31,7 +36,7 @@
 
 // importando as dependências
 import axios from "axios"; // ferramenta para requisições http
-import { baseApiUrl, userKey } from "@/global"; // ....
+import { baseApiUrl, userKey } from "@/global"; // importando as constantes baseApiUrl e userKey presente no arquivo global.js
 import { mapState } from "vuex"; //responsável por mapear os atributos da store
 
 // componentes de template utilizados na composição deste componente
@@ -49,8 +54,9 @@ export default {
   // definindo os componentes a serem utilizados
   components: { Header, Menu, Content, Footer, Loading },
 
-  // obtendo o valor dos atributo isMenuVisible e user da store
-  computed: mapState(["isMenuVisible", "user"]),
+  // obtendo o valor dos atributos isMenuVisible, keyCategoriesReload e user da store
+  computed: mapState(["isMenuVisible", "keyCategoriesReload", "user"]),
+
   data: function() {
     return {
       validatingToken: true,

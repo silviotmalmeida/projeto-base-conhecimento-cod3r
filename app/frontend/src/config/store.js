@@ -17,6 +17,12 @@ export default new Vuex.Store({
     // define a visibilidade atual do menu lateral
     isMenuVisible: false,
 
+    // define a chave a ser vinculada as listas de categorias para atualização automática
+    keyCategoriesReload: 0,
+
+    // define a chave a ser vinculada as listas de usuários para atualização automática
+    keyUsersReload: 0,
+
     // define se existe usuário logado atualmente
     user: null,
   },
@@ -40,6 +46,16 @@ export default new Vuex.Store({
       else {
         state.isMenuVisible = isVisible;
       }
+    },
+    // método responsável por alterar a chave das categorias, forçando a atualização automática
+    reloadCategories(state) {
+      // incrementa a chave das categorias
+      state.keyCategoriesReload++;
+    },
+    // método responsável por alterar a chave dos usuários, forçando a atualização automática
+    reloadUsers(state) {
+      // incrementa a chave dos usuários
+      state.keyUsersReload++;
     },
     setUser(state, user) {
       state.user = user;

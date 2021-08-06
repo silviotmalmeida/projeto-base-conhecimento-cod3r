@@ -147,10 +147,14 @@
 import { VueEditor } from "vue2-editor"; // componente de edição de texto
 import { baseApiUrl, showError } from "@/global"; // importando a constante baseApiUrl e o método showError() presente no arquivo global.js
 import axios from "axios"; // ferramenta para requisições http
+import { mapState } from "vuex"; //responsável por mapear os atributos da store
 
 export default {
   // definindo o atributo name
   name: "ArticleAdmin",
+
+  // obtendo o valor dos atributos keyCategoriesReload e keyUsersReload da store
+  computed: mapState(["keyCategoriesReload", "keyUsersReload"]),
 
   // definindo os componentes a serem utilizados
   components: { VueEditor },
@@ -220,7 +224,7 @@ export default {
       this.article = {};
 
       // recarregando a listagem de artigos
-      this.loadArticles();
+      // this.loadArticles();
     },
     // método responsável por criar ou atualizar o artigo via API
     save() {
@@ -240,6 +244,9 @@ export default {
 
           // limpa os dados do artigo e do formulário
           this.reset();
+
+          // recarregando a listagem de artigos
+          this.loadArticles();
         })
 
         // em caso de erro, exibe a mensagem de erro
@@ -263,6 +270,9 @@ export default {
 
           // limpa os dados do artigo e do formulário
           this.reset();
+
+          // recarregando a listagem de artigos
+          this.loadArticles();
         })
 
         // em caso de erro, exibe a mensagem de erro
@@ -364,17 +374,27 @@ export default {
       // recarregando a listagem de artigos
       this.loadArticles();
     },
+    // quando o valor do atributo keyCategoriesReload alterar:
+    keyCategoriesReload() {
+      // recarregando as listagens de categorias
+      this.loadCategories();
+    },
+    // quando o valor do atributo keyUsersReload alterar:
+    keyUsersReload() {
+      // recarregando as listagens de categorias
+      this.loadUsers();
+    },
   },
   // função de ciclo de vida, chamada quando o componente é montado
   mounted() {
-    // carrega o array de usuários
-    this.loadUsers();
+    // carrega a listagem de artigos
+    this.loadArticles();
 
     // carrega o array de categorias
     this.loadCategories();
 
-    // carrega a listagem de artigos
-    this.loadArticles();
+    // carrega o array de usuários
+    this.loadUsers();
   },
 };
 </script>
