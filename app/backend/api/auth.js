@@ -58,7 +58,7 @@ module.exports = (app) => {
     // retornando o payload e o token
     res.json({
       ...payload,
-      // gerando o token a partir do payload e da palavra secreta
+      // gerando o token a partir do payload e da palavra secreta e inserindo na resposta
       token: jwt.encode(payload, authSecret),
     });
   };

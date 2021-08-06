@@ -100,14 +100,24 @@ export default {
   },
   // lista de observers
   watch: {
-    //   ....
+    // em caso de alteração na rota
     $route(to) {
+      // obtendo o id da categoria a partir da rota
       this.category.id = to.params.id;
+
+      // limpa a lista de artigos
       this.articles = [];
+
+      // definindo a página inicial da lista
       this.page = 1;
+
+      // habilitando a exibição do botão de "Carregar Mais Itens"
       this.loadMore = true;
 
+      // carregando os dados da categoria
       this.getCategory();
+
+      // carregando a primeira página de artigos da categoria
       this.getArticles();
     },
   },

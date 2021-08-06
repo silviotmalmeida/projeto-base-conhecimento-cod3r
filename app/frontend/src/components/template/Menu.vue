@@ -10,7 +10,7 @@
             <!-- inserindo o ícone -->
             <i class="fa fa-search fa-lg"></i>
 
-            <!-- inserindo o formulário -->
+            <!-- inserindo o formulário de filtro -->
             <input type="text" placeholder="Digite para filtrar..."
                 v-model="treeFilter" class="filter-field">
         </div>
@@ -144,37 +144,66 @@ export default {
 }
 
 .tree-arrow.has-child {
-  /* .... */
+  /* aplicando filtro */
   filter: brightness(2);
 }
 
 .menu .menu-filter {
+  /* utilizando flexbox dentro do componente */
   display: flex;
+
+  /* centralizando horizontalmente os componentes internos */
   justify-content: center;
+
+  /* centralizando verticalmente os componentes internos */
   align-items: center;
 
+  /* espaçamento externo */
   margin: 20px;
+
+  /* espaçamento interno inferior */
   padding-bottom: 8px;
+
+  /* borda inferior */
   border-bottom: 1px solid #aaa;
 }
 
 .menu .menu-filter i {
+  /* cor do texto */
   color: #aaa;
+
+  /* margem direita */
   margin-right: 10px;
 }
 
 .menu input {
+  /* cor do texto */
   color: #ccc;
+
+  /* tamanho do texto */
   font-size: 1.3rem;
+
+  /* retirando a borda default */
   border: 0;
+
+  /* retirando o outline default */
   outline: 0;
+
+  /* comprimento */
   width: 100%;
+
+  /* estilo do fundo */
   background: transparent;
 }
 
 .tree-filter-empty {
+  /* cor de texto */
   color: #ccc;
+
+  /* tamanho do texto */
   font-size: 1.3rem;
+
+  /* margem esquerda */
   margin-left: 20px;
 }
 </style>

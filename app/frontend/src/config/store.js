@@ -57,13 +57,25 @@ export default new Vuex.Store({
       // incrementa a chave dos usuários
       state.keyUsersReload++;
     },
+    // método responsável por logar o usuário no sistema
     setUser(state, user) {
+      // populando os dados de usuário a partir do parâmetro recebido
       state.user = user;
+
+      // se o usuário foi passado por parâmetro:
       if (user) {
+        // aplica o token gerado no header da sessão
         axios.defaults.headers.common["Authorization"] = `bearer ${user.token}`;
+
+        // exibe o menu lateral
         state.isMenuVisible = true;
-      } else {
+      }
+      // senão:
+      else {
+        // limpa o header da sessão
         delete axios.defaults.headers.common["Authorization"];
+
+        // oculta o menu lateral
         state.isMenuVisible = false;
       }
     },

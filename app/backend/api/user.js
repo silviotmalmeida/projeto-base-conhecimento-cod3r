@@ -120,7 +120,7 @@ module.exports = (app) => {
       // se o atributo user.id não estiver setado
       if (!user.id) {
         // se a consulta retornar um email existente, lança uma mensagem de erro
-        notExistsOrError(userFromDB, "Usuário já cadastrado");
+        notExistsOrError(userFromDB, "E-mail já cadastrado");
       }
     } catch (msg) {
       // se foi lançado algum erro, retorna erro 400

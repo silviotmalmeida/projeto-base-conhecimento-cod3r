@@ -420,6 +420,8 @@ module.exports = (app) => {
     app
       // consultando a tabela categories
       .db("categories")
+      // ordenando os resultados de forma cronológica decrescente
+      .orderBy("name")
       // convertendo e retornando as categorias em formato json
       .then((categories) => res.json(toTree(categories)))
       // em caso de erro retorna o status 500 e detalhes do erro
