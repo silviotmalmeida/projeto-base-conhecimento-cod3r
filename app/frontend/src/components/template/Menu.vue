@@ -94,8 +94,9 @@ export default {
       // deselecionando o nó para permitir reclick
       node.unselect();
 
-      // ....
+      // se o dispositivo for extra-pequeno ou pequeno:
       if (this.$mq === "xs" || this.$mq === "sm") {
+        // utiliza o método toogleMenu() da store para ocultar o menu
         this.$store.commit("toggleMenu", false);
       }
     },

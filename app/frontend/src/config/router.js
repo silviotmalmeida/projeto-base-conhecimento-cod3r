@@ -8,9 +8,9 @@ import Home from "@/components/home/Home"; // componente com o conteúdo da pág
 import AdminPages from "@/components/admin/AdminPages"; // componente com o conteúdo da página Administração
 import ArticlesByCategory from "@/components/article/ArticlesByCategory"; // componente com o conteúdo da página de Artigos por Categoria
 import ArticleById from "@/components/article/ArticleById"; // componente com o conteúdo da página de Artigos por Id
-import Auth from "@/components/auth/Auth";
+import Auth from "@/components/auth/Auth"; // componente com o formulário de autenticação
 
-import { userKey } from "@/global"; // ....
+import { userKey } from "@/global"; // importando a constante userKey presente no arquivo global.js
 
 // carregando o router
 Vue.use(VueRouter);

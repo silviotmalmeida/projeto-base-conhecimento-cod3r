@@ -16,8 +16,8 @@
 // trecho de código que representa o comportamento do componente
 
 // importando as dependências
-import "highlightjs/styles/dracula.css"; // ....
-import hljs from "highlightjs/highlight.pack.js"; // ....
+import "highlightjs/styles/dracula.css"; // importando o css da bliblioteca de highlight de código-fonte
+import hljs from "highlightjs/highlight.pack.js"; // // importando o js da bliblioteca de highlight de código-fonte
 import { baseApiUrl } from "@/global"; // importando a constante baseApiUrl presente no arquivo global.js
 import axios from "axios"; // ferramenta para requisições http
 import PageTitle from "../template/PageTitle"; // componente de título da página
@@ -50,8 +50,9 @@ export default {
       // em caso de sucesso, carrega os dados do artigo
       .then((res) => (this.article = res.data));
   },
-  // ....
+  // função de ciclo de vida, chamada quando o componente é atualizado
   updated() {
+    // aplicando o highlight dentro dos objetos de código-fonte
     document.querySelectorAll(".article-content pre.ql-syntax").forEach((e) => {
       hljs.highlightBlock(e);
     });

@@ -98,8 +98,9 @@ export default {
         // envia o payload e token para o método setUser() da store
         this.$store.commit("setUser", userData);
 
-        // ....
+        // se o dispositivo for extra-pequeno ou pequeno:
         if (this.$mq === "xs" || this.$mq === "sm") {
+          // utiliza o método toogleMenu() da store para ocultar o menu
           this.$store.commit("toggleMenu", false);
         }
       }
@@ -116,7 +117,10 @@ export default {
       this.validatingToken = false;
     },
   },
+
+  // função de ciclo de vida, chamada quando o componente é criado
   created() {
+    // valida o token
     this.validateToken();
   },
 };

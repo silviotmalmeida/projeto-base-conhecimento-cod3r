@@ -44,7 +44,7 @@
 // trecho de código que representa o comportamento do componente
 
 // importando as dependências
-import { userKey } from "@/global"; // ....
+import { userKey } from "@/global"; // importando a constante userKey presente no arquivo global.js
 import { mapState } from "vuex"; //responsável por mapear os atributos da store
 import Gravatar from "vue-gravatar"; //responsável por obter a imagem do usuário a partir de seu e-mail
 

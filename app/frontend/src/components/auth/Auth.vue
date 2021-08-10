@@ -105,7 +105,7 @@ export default {
 
         // em caso de sucesso:
         .then((res) => {
-          // envia o payload e token para o método setUser() da store
+          // envia o payload e t para o método setUser() da store
           this.$store.commit("setUser", res.data);
 
           // armazena localmente os dados de login para acesso posterior

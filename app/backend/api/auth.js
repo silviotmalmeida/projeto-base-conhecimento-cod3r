@@ -51,8 +51,8 @@ module.exports = (app) => {
       admin: user.admin,
       // data de geração do token
       iat: now,
-      // data de expiração do token
-      exp: now + 60 * 60 * 24 * 3,
+      // data de expiração do token (1 hora)
+      exp: now + 60 * 60,
     };
 
     // retornando o payload e o token
