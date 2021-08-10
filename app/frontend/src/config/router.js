@@ -28,7 +28,7 @@ const routes = [
     name: "adminPages",
     path: "/admin",
     component: AdminPages,
-    meta: { requiresAdmin: true },
+    meta: { requiresAdmin: true }, // incluindo atributo meta para validação de administrador
   },
   {
     // página de Artigos por Categoria
@@ -56,13 +56,27 @@ const router = new VueRouter({
   routes,
 });
 
+// evento que é executado sempre que houver mudança de rota
+// recebe como parâmetros:
+// a rota de destino (to)
+// a tela de origem (from)
 router.beforeEach((to, from, next) => {
+  // obtendo os dados do armazenamento local
   const json = localStorage.getItem(userKey);
 
+  // verificando se a rota de destino possui o atributo meta requiresAdmin true
+  // em caso positivo:
   if (to.matched.some((record) => record.meta.requiresAdmin)) {
+    // convertendo os dados obtidos para json
     const user = JSON.parse(json);
+
+    // caso o usuario exista e seja administrador, prossegue.
+    // senão redireciona para a página inicial
     user && user.admin ? next() : next({ path: "/" });
-  } else {
+  }
+  // em caso negativo:
+  else {
+    // prossegue
     next();
   }
 });

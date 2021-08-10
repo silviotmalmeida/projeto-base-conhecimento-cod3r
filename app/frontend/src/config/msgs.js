@@ -18,8 +18,8 @@ Vue.toasted.register(
   // definindo o nome
   "defaultSuccess",
 
-  // se não receber a mensagem via atributo, usa o default "Operação realidada com sucesso!"
-  (obj) => (!obj.msg ? "Operação realidada com sucesso!" : obj.msg),
+  // se não receber a mensagem via atributo, usa o default "Operação realizada com sucesso!"
+  (obj) => (!obj.msg ? "Operação realizada com sucesso!" : obj.msg),
 
   // definindo o tupo e o ícone
   { type: "success", icon: "check" }

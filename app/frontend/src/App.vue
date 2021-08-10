@@ -57,39 +57,62 @@ export default {
   // obtendo o valor dos atributos isMenuVisible, keyCategoriesReload e user da store
   computed: mapState(["isMenuVisible", "keyCategoriesReload", "user"]),
 
+  // função que retorna um objeto representando o estado do componente
   data: function() {
     return {
+      // definindo a necessidade de validação de token
       validatingToken: true,
     };
   },
   // definindo os métodos
   methods: {
+    // método responsável por validar o token da sessão
     async validateToken() {
+      // definindo a necessidade de validação de token
       this.validatingToken = true;
 
+      // obtendo os dados do armazenamento local
       const json = localStorage.getItem(userKey);
+
+      // convertendo os dados obtidos para json
       const userData = JSON.parse(json);
+
+      // retirando os dados de usuário da store
       this.$store.commit("setUser", null);
 
+      // se não existirem dados de usuário no armazenamento local:
       if (!userData) {
+        // remove a necessidade de validação de token
         this.validatingToken = false;
+
+        // redireciona para a página de autenticação
         this.$router.push({ name: "auth" });
         return;
       }
 
+      // validando o token obtido nos dados do armazenamento local
       const res = await axios.post(`${baseApiUrl}/validateToken`, userData);
 
+      // se o token for válido:
       if (res.data) {
+        // envia o payload e token para o método setUser() da store
         this.$store.commit("setUser", userData);
 
+        // ....
         if (this.$mq === "xs" || this.$mq === "sm") {
           this.$store.commit("toggleMenu", false);
         }
-      } else {
+      }
+      // senão:
+      else {
+        // apaga os dados do armazenamento local
         localStorage.removeItem(userKey);
+
+        // redireciona para a página de autenticação
         this.$router.push({ name: "auth" });
       }
 
+      // remove a necessidade de validação de token
       this.validatingToken = false;
     },
   },

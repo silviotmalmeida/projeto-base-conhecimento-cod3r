@@ -37,8 +37,8 @@ module.exports = (app) => {
     // comparando se senha recebida por parâmetro na requisição é compatível com a armazenada no bd
     const isMatch = bcrypt.compareSync(req.body.password, user.password);
 
-    // se as senhas não forem compatíveis, retorna erro 401 e envia mensagem
-    if (!isMatch) return res.status(401).send("Email/Senha inválidos!");
+    // se as senhas não forem compatíveis, retorna erro 400 e envia mensagem
+    if (!isMatch) return res.status(400).send("Email ou Senha inválidos!");
 
     // obtendo a data atual em segundos
     const now = Math.floor(Date.now() / 1000);

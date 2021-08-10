@@ -187,7 +187,7 @@ export default {
   border: 0;
 
   /* retirando o outline default */
-  outline: 0;
+  outline: none;
 
   /* comprimento */
   width: 100%;

@@ -3,8 +3,8 @@
 // importando as dependências
 import Vue from "vue";
 
-// definindo a constante de chave dos dados da local storage
-export const userKey = "__knowledge_user";
+// definindo a constante de chave dos dados do armazenamento local
+export const userKey = "__conhecimento_user";
 
 // definindo a URL da API a ser consultada
 export const baseApiUrl = "http://localhost:4000";

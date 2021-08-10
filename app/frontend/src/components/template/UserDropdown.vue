@@ -63,13 +63,13 @@ export default {
   methods: {
     // método que realiza o logout do sistema
     logout() {
-      // ....
+      // removendo os dados do usuário do armazenamento local
       localStorage.removeItem(userKey);
 
       // retirando os dados do usuário da store
       this.$store.commit("setUser", null);
 
-      // redirecionando para a URL /auth
+      // redirecionando para a tela de autenticação
       this.$router.push({ name: "auth" });
     },
   },
